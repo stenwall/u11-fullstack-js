@@ -2,10 +2,19 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "es6",
+    // "strictNullChecks": true,
+    "moduleResolution": "node",
+    // "noUnusedParameters": true,
+    // "noUnusedLocals": true,
     "strict": true,
     "rootDir": "./",
     "esModuleInterop": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "config/index.ts",
+    "index.d.ts"
+  ],
   "exclude": ["node_modules"]
 }
