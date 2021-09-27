@@ -1,6 +1,7 @@
 import { Schema, Types, model, Document } from 'mongoose';
 import { RoleDocument } from './role.model';
 import { HouseDocument } from './house.model';
+import { PostDocument } from './post.model';
 
 export interface UserDocument extends Document {
   username: string;
@@ -12,8 +13,9 @@ export interface UserDocument extends Document {
   status: boolean;
   friends?: Types.Array<string>;
   groups?: Types.Array<string>;
-  role: RoleDocument['name'];
+  role: string;
   house: HouseDocument['id'];
+  posts: Types.Array<PostDocument['id']>;
 }
 
 const UserSchema = new Schema<UserDocument>(
@@ -52,13 +54,18 @@ const UserSchema = new Schema<UserDocument>(
     groups: { type: [String] },
     role: {
       type: String,
-      ref: 'Role',
-      enum: ['user', 'admin', 'super-admin',]
+      enum: ['user', 'admin', 'super-admin']
     },
     house: {
       type: Schema.Types.ObjectId,
       ref: 'House'
-    }
+    },
+    posts: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Post'
+      }
+    ]
   },
   {
     timestamps: true
@@ -69,32 +76,34 @@ const UserSchema = new Schema<UserDocument>(
   return object;
 });
 
+// Virtuals
+// UserSchema.virtual("fullName").get(function() {
+//   return this.firstName + this.lastName
+// })
 
-// UserSchema.pre<UserDocument>("save", function(next) {
+// Methods
+// UserSchema.methods.getGender = function() {
+//   return this.gender > 0 "Male" : "Female"
+// }
+
+// Static methods
+// UserSchema.statics.findWithCompany = function(id) {
+//   return this.findById(id).populate("company").exec()
+// }
+
+// Document middlewares
+// UserSchema.pre("save", function(next) {
 //   if (this.isModified("password")) {
 //     this.password = hashPassword(this.password)
 //   }
 // });
 
-// const UserModel = mongoose.model<User>('User', schema);
+// Query middlewares
+// UserSchema.post("findOneAndUpdate", async function(doc) {
+//   await updateCompanyReference(doc);
+// });
 
-// const User = mongoose.model(
-//   'User',
-//   new mongoose.Schema({
-//     username: String,
-//     firstname: String,
-//     lastname: String,
-//     body: String,
-//     email: String,
-//     password: String,
-//     status: Boolean,
-//     roles: [
-//       {
-//         type: mongoose.Schema.Types.ObjectId,
-//         ref: 'Role'
-//       }
-//     ]
-//   }).method('toJSON', function () {
+//   .method('toJSON', function () {
 //     const { __v, _id, ...object } = this.toObject();
 //     object.id = _id;
 //     return object;
