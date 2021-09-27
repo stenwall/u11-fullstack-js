@@ -4,12 +4,12 @@ import { dbModel } from '../models';
 const ROLES = dbModel.ROLES;
 const User = dbModel.User;
 
-const checkDuplicateUsernameOrEmail = (
+const checkDuplicates = (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  // Username
+  // username
   User.findOne({
     username: req.body.username
   }).exec((err: any, user) => {
@@ -22,7 +22,7 @@ const checkDuplicateUsernameOrEmail = (
       return res.status(400).send({ message: 'Failed! Username is already in use!' });
     }
 
-    // Email
+    // email
     User.findOne({
       email: req.body.email
     }).exec((err, user) => {
@@ -41,21 +41,18 @@ const checkDuplicateUsernameOrEmail = (
 
 const checkRoleExist = (req: Request, res: Response, next: NextFunction) => {
   if (req.body.role) {
-    ROLES.forEach(el => {
-      if (req.body.role != el) {
-        res.status(400).send({
-          message: `Failed! Role ${req.body.role} does not exist!`
-        });
-      }
-    });
+    if (!ROLES.includes(req.body.role)) {
+      return res.status(400).send({
+        message: `Failed! Role ${req.body.role} does not exist!`
+      });
+    }
   }
-
   return next();
 };
 
-const verifySignUp = {
-  checkDuplicateUsernameOrEmail,
+const verifyRegister = {
+  checkDuplicates,
   checkRoleExist
 };
 
-export default verifySignUp;
+export default verifyRegister;
