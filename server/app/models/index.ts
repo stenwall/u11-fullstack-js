@@ -1,14 +1,12 @@
-import mongoose from 'mongoose';
-import Role from './role.model';
-import User from './user.model';
+import Role, { RoleDocument } from './role.model';
+import User, { UserDocument } from './user.model';
+import House, { HouseDocument } from './house.model';
 
-mongoose.Promise = global.Promise;
-
-const db = {
-  mongoose: mongoose,
-  user: User,
-  role: Role,
-  ROLES: ['user', 'admin']
+export const dbModel = {
+  User,
+  Role,
+  House,
+  ROLES: ['user', 'admin', 'super-admin']
 };
 
-export default db;
+export { UserDocument, RoleDocument, HouseDocument};
