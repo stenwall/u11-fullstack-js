@@ -6,16 +6,15 @@ import express from 'express';
 import cors from 'cors';
 import config from './config';
 import { dbModel } from './app/models';
-import authRoutes from './app/routes/auth.routes';
-import userRoutes from './app/routes/user.routes';
+import routes from './app/routes';
 
 const app = express();
+const router = express.Router();
 
 // dotenv.config();
 
 const port: number = config.PORT as unknown as number;
 const mongoURI: string = config.DB_URI as string;
-const Role = dbModel.Role;
 const House = dbModel.House;
 
 mongoose.Promise = global.Promise;
@@ -48,43 +47,6 @@ mongoose
   });
 
 const initial = () => {
-  // Role.estimatedDocumentCount((err: any, count: number) => {
-  //   if (!err && count === 0) {
-  //     new Role({
-  //       name: 'user'
-  //     })
-  //     .save((err: any) => {
-  //       if (err) {
-  //         console.log('error', err);
-  //       }
-
-  //       console.log('added `user` to roles collection');
-  //     });
-
-  //     new Role({
-  //       name: 'admin'
-  //     })
-  //     .save((err: any) => {
-  //       if (err) {
-  //         console.log('error', err);
-  //       }
-
-  //       console.log('added `admin` to roles collection');
-  //     });
-
-  //     new Role({
-  //       name: 'super-admin'
-  //     })
-  //     .save((err: any) => {
-  //       if (err) {
-  //         console.log('error', err);
-  //       }
-
-  //       console.log('added `super-admin` to roles collection');
-  //     });
-  //   }
-  // });
-
   House.estimatedDocumentCount((err: any, count: number) => {
     if (!err && count === 0) {
       new House({
@@ -108,6 +70,7 @@ const initial = () => {
 
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}.`);
-  authRoutes(app);
-  userRoutes(app);
+  routes.auth(app, router);
+  routes.user(app, router);
+  routes.post(app, router);
 });

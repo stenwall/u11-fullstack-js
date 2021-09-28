@@ -23,7 +23,7 @@ export const register = async (req: Request, res: Response) => {
     password: bcrypt.hashSync(req.body.password, 8),
     status: req.body.status ? req.body.status : true,
     role: req.body.role ? req.body.role : 'user',
-    house: req.body.house
+    house_id: req.body.house
   });
 
   try {
@@ -35,7 +35,7 @@ export const register = async (req: Request, res: Response) => {
         firstname: savedUser.firstname,
         lastname: savedUser.lastname,
         role: savedUser.role,
-        house: savedUser.house,
+        house_id: savedUser.house_id,
         id: savedUser._id
       }
     });

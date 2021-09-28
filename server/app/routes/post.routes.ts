@@ -25,7 +25,7 @@ const postRoutes = (app: Application, router: Router) => {
 
   // get all posts by user id
   router.get(
-    '/user/:id',
+    '/user/posts',
     [verifyToken],
     controller.findPostsByUserId
   );

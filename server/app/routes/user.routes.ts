@@ -6,7 +6,7 @@ import * as controller from '../controllers/user.controller';
 const authJWT = middlewares.authJWT;
 
 const userRoutes = (app: Application, router: Router) => {
-  router.use((req: Request, res: Response, next: NextFunction) => {
+  app.use((req: Request, res: Response, next: NextFunction) => {
     res.header(
       'Access-Control-Allow-Headers',
       'x-access-token, Origin, Content-Type, Accept'
@@ -15,14 +15,14 @@ const userRoutes = (app: Application, router: Router) => {
   });
 
   // get public content
-  router.get('/all', controller.publicAccess);
+  router.get('/api/test/all', controller.publicAccess);
 
   // get user content
-  router.get('/user', [authJWT.verifyToken], controller.userAccess);
+  router.get('/api/test/user', [authJWT.verifyToken], controller.userAccess);
 
   // get admin content
   router.get(
-    '/admin',
+    '/api/test/admin',
     [authJWT.verifyToken, authJWT.isAdmin],
     controller.adminAccess
   );
@@ -34,7 +34,7 @@ const userRoutes = (app: Application, router: Router) => {
     controller.superAdminAccess
   );
 
-  app.use('/api/test', router);
+  // app.use('/api/test', router);
 };
 
 export default userRoutes;

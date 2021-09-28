@@ -5,17 +5,23 @@ import { dbModel, PostDocument } from '../models';
 const Post = dbModel.Post;
 
 // create and save a new post
-export const createPost = async (req: Request, res: Response) => {
+export const createPost = async (req: any, res: Response) => {
   if (!req.body) {
     res.status(400).send({ message: 'Cannot be empty.' });
     return;
   }
 
+  const post = new Post({
+    body: req.body.body,
+    user_id: req.userId
+  })
+  
+
   try {
-    const post = await Post.create(req.body);
+    const savedPost = await post.save();
     return res.status(201).send({
       message: 'Post created successfully.',
-      post,
+      post: savedPost
     });
   } catch (err: any) {
     return res.status(400).send({
@@ -65,10 +71,8 @@ export const getPostWithComments = async (req: Request, res: Response) => {
 
 // find all posts by author
 export const findPostsByUserId = async (req: Request, res: Response) => {
-  const id = req.params.id;
-
   try {
-    const posts = await Post.find({ user_id: id }).exec();
+    const posts = await Post.find({ user_id: req.userId }).exec();
     return res.status(201).send({
       posts
     });
