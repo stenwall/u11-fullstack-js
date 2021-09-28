@@ -1,7 +1,5 @@
 import { Schema, Types, model, Document } from 'mongoose';
-import { RoleDocument } from './role.model';
-import { HouseDocument } from './house.model';
-import { PostDocument } from './post.model';
+import { HouseDocument } from './';
 
 export interface UserDocument extends Document {
   username: string;
@@ -14,8 +12,7 @@ export interface UserDocument extends Document {
   friends?: Types.Array<string>;
   groups?: Types.Array<string>;
   role: string;
-  house: HouseDocument['id'];
-  posts: Types.Array<PostDocument['id']>;
+  house_id: HouseDocument['id'];
 }
 
 const UserSchema = new Schema<UserDocument>(
@@ -54,27 +51,18 @@ const UserSchema = new Schema<UserDocument>(
     groups: { type: [String] },
     role: {
       type: String,
-      enum: ['user', 'admin', 'super-admin']
+      enum: ['user', 'admin', 'super-admin'],
+      default: 'user'
     },
-    house: {
+    house_id: {
       type: Schema.Types.ObjectId,
       ref: 'House'
     },
-    posts: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Post'
-      }
-    ]
   },
   {
     timestamps: true
   }
-).method('toJSON', function () {
-  const { __v, _id, ...object } = this.toObject();
-  object.id = _id;
-  return object;
-});
+);
 
 // Virtuals
 // UserSchema.virtual("fullName").get(function() {

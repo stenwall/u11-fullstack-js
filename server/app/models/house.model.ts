@@ -1,10 +1,10 @@
 import { Schema, Document, model, Types } from 'mongoose';
-import User from './user.model';
+import { UserDocument } from './';
 
 export interface HouseDocument extends Document {
   name: string;
-  desc: string;
-  members?: Types.Array<string>;
+  desc?: string;
+  admins?: Types.Array<UserDocument['_id']>;
   address: string;
   streetnumber: number;
   zipcode: number;
@@ -21,7 +21,7 @@ const schema = new Schema<HouseDocument>(
       minlength: 3
     },
     desc: { type: String },
-    members: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    admins: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     address: {
       type: String,
       required: true,
@@ -47,11 +47,7 @@ const schema = new Schema<HouseDocument>(
   {
     timestamps: true
   }
-).method('toJSON', function () {
-  const { __v, _id, ...object } = this.toObject();
-  object.id = _id;
-  return object;
-});
+);
 
 const House = model<HouseDocument>('House', schema);
 
