@@ -8,13 +8,17 @@
     // "noUnusedLocals": true,
     "strict": true,
     "rootDir": "./",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "typeRoots": [
+      "@types",
+      "./node_modules/@types",
+    ],
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "config/index.ts",
-    "index.d.ts"
-  ],
+    "@types/express/index.d.ts",
+    "server.js"  ],
   "exclude": ["node_modules"]
 }

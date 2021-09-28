@@ -16,7 +16,7 @@ const verifyToken = (req: Request, res: Response, next: NextFunction) => {
     if (err) {
       return res.status(401).send({ message: 'Unauthorized!' });
     }
-    req.body._id = decoded.id;
+    req.userId = decoded.id;
     return next();
   });
 };
@@ -36,7 +36,7 @@ const isAdmin = (req: Request, res: Response, next: NextFunction) => {
 
     return next();
   });
-}
+};
 
 const isSuperAdmin = (req: Request, res: Response, next: NextFunction) => {
   User.findById(req.body._id).exec((err: any, user: any) => {
@@ -53,7 +53,7 @@ const isSuperAdmin = (req: Request, res: Response, next: NextFunction) => {
 
     return next();
   });
-}
+};
 
 const authJWT = {
   verifyToken,
