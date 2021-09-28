@@ -1,12 +1,12 @@
 // routes for authorization
-import express, { Request, Response, NextFunction } from 'express';
+import { Request, Response, NextFunction, Router, Application } from 'express';
 import middlewares from '../middlewares';
 import * as controller from '../controllers/user.controller';
 
 const authJWT = middlewares.authJWT;
 
-const userRoutes = (app: express.Router) => {
-  app.use((req: Request, res: Response, next: NextFunction) => {
+const userRoutes = (app: Application, router: Router) => {
+  router.use((req: Request, res: Response, next: NextFunction) => {
     res.header(
       'Access-Control-Allow-Headers',
       'x-access-token, Origin, Content-Type, Accept'
@@ -14,21 +14,27 @@ const userRoutes = (app: express.Router) => {
     next();
   });
 
-  app.get('/api/test/all', controller.publicAccess);
+  // get public content
+  router.get('/all', controller.publicAccess);
 
-  app.get('/api/test/user', [authJWT.verifyToken], controller.userAccess);
+  // get user content
+  router.get('/user', [authJWT.verifyToken], controller.userAccess);
 
-  app.get(
-    '/api/test/admin',
+  // get admin content
+  router.get(
+    '/admin',
     [authJWT.verifyToken, authJWT.isAdmin],
     controller.adminAccess
   );
 
-  app.get(
-    '/api/test/super-admin',
+  // get super-admin content
+  router.get(
+    '/super-admin',
     [authJWT.verifyToken, authJWT.isSuperAdmin],
     controller.superAdminAccess
   );
+
+  app.use('/api/test', router);
 };
 
 export default userRoutes;
