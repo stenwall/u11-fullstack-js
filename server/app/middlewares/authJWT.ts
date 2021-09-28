@@ -4,10 +4,9 @@ import config from '../../config/auth.config';
 import { dbModel } from '../models';
 
 const User = dbModel.User;
-const Role = dbModel.Role;
 
 const verifyToken = (req: Request, res: Response, next: NextFunction) => {
-  let token = req.headers['x-access-token'] as string;
+  const token = req.headers['x-access-token'] as string;
 
   if (!token) {
     return res.status(403).send({ message: 'No token provided!' });
