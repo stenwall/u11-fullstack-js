@@ -62,3 +62,7 @@ const authJWT = {
 };
 
 export default authJWT;
+
+// source to declaration merging Express' types
+// ------------------------------------------------------------------
+// https://dev.to/kwabenberko/extend-express-s-request-object-with-typescript-declaration-merging-1nn5
