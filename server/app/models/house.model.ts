@@ -4,7 +4,8 @@ import { UserDocument } from './';
 export interface HouseDocument extends Document {
   name: string;
   desc?: string;
-  admins?: Types.Array<UserDocument['_id']>;
+  admins: Types.Array<UserDocument['_id']>;
+  members: Types.Array<UserDocument['_id']>;
   address: string;
   streetnumber: number;
   zipcode: number;
@@ -21,7 +22,12 @@ const schema = new Schema<HouseDocument>(
       minlength: 3
     },
     desc: { type: String },
-    admins: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    admins: [{
+      type: Schema.Types.ObjectId, ref: 'User'
+    }],
+    members: [{
+      type: Schema.Types.ObjectId, ref: 'User'
+    }],
     address: {
       type: String,
       required: true,
