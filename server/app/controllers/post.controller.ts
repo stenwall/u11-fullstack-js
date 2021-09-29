@@ -1,8 +1,8 @@
 // controller for posts
 import { Request, Response } from 'express';
-import { dbModel, PostDocument } from '../models';
+import models from '../models';
 
-const Post = dbModel.Post;
+const Post = models.Post;
 
 // create and save a new post
 export const createPost = async (req: any, res: Response) => {

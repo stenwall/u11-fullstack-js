@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import * as JWT from 'jsonwebtoken';
 import config from '../../config/auth.config';
-import { dbModel } from '../models';
+import models from '../models';
 
-const User = dbModel.User;
+const User = models.User;
 
 const verifyToken = (req: Request, res: Response, next: NextFunction) => {
   const token = req.headers['x-access-token'] as string;

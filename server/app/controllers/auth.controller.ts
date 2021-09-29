@@ -3,9 +3,9 @@ import { Request, Response } from 'express';
 import * as JWT from 'jsonwebtoken';
 import * as bcrypt from 'bcryptjs';
 import config from '../../config/auth.config';
-import { dbModel } from '../models';
+import models from '../models';
 
-const User = dbModel.User;
+const User = models.User;
 
 // create and save a new user
 export const register = async (req: Request, res: Response) => {
@@ -92,7 +92,7 @@ export const login = async (req: Request, res: Response) => {
   });
 };
 
-// const User = dbModel.User;
+// const User = models.User;
 
 // // create and save a new user
 // export const create = async (req: Request, res: Response) => {

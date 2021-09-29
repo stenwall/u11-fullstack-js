@@ -1,9 +1,9 @@
 // controller for comments
 import { Request, Response } from 'express';
-import { dbModel } from '../models';
+import models from '../models';
 
-const Comment = dbModel.Comment;
-const Post = dbModel.Post;
+const Comment = models.Comment;
+const Post = models.Post;
 
 // create and save a new comment
 export const createComment = async (req: Request, res: Response) => {
@@ -82,7 +82,7 @@ export const updateComment = async (req: Request, res: Response) => {
   }
 };
 
-// remove comment by id
+// delete comment by id
 export const deleteComment = async (req: Request, res: Response) => {
   const id = req.params.id;
 

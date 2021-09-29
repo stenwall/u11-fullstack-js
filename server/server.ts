@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 import express from 'express';
 import cors from 'cors';
 import config from './config';
-import { dbModel } from './app/models';
+import models from './app/models';
 import routes from './app/routes';
 
 const app = express();
@@ -15,7 +15,7 @@ const router = express.Router();
 
 const port: number = config.PORT as unknown as number;
 const mongoURI: string = config.DB_URI as string;
-const House = dbModel.House;
+const House = models.House;
 
 mongoose.Promise = global.Promise;
 

@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
-import { dbModel } from '../models';
+import models from '../models';
 
-const ROLES = dbModel.ROLES;
-const User = dbModel.User;
+const ROLES = models.ROLES;
+const User = models.User;
 
 const checkDuplicates = (
   req: Request,
