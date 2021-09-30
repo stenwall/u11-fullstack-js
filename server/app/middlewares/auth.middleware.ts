@@ -61,7 +61,8 @@ const verifyOwner = (req: Request, res: Response, next: NextFunction) => {
 const auth = {
   verifyAdmin,
   verifySuperAdmin,
-  verifyOwner
+  verifyOwner,
+  verifyMember
 };
 
 export default auth;

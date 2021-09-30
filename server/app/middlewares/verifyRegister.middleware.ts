@@ -19,7 +19,7 @@ const checkDuplicates = (
     }
 
     if (user) {
-      return res.status(400).send({ message: 'Failed! Username is already in use!' });
+      return res.status(400).send({ message: 'Failed: username is already in use.' });
     }
 
     // email
@@ -31,7 +31,7 @@ const checkDuplicates = (
       }
 
       if (user) {
-        return res.status(400).send({ message: 'Failed! Email is already in use!' });
+        return res.status(400).send({ message: 'Failed: email is already in use.' });
       }
 
       return next();
@@ -43,7 +43,7 @@ const checkRoleExist = (req: Request, res: Response, next: NextFunction) => {
   if (req.body.role) {
     if (!ROLES.includes(req.body.role)) {
       return res.status(400).send({
-        message: `Failed! Role ${req.body.role} does not exist!`
+        message: `Failed: role ${req.body.role} does not exist.`
       });
     }
   }
