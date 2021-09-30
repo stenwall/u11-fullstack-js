@@ -1,6 +1,6 @@
 // controller for authentication
 import { Request, Response } from 'express';
-import * as JWT from 'jsonwebtoken';
+import * as jwt from 'jsonwebtoken';
 import * as bcrypt from 'bcryptjs';
 import config from '../../config/auth.config';
 import models from '../models';
@@ -48,41 +48,47 @@ export const register = async (req: Request, res: Response) => {
 
 // login user
 export const login = async (req: Request, res: Response) => {
-  User.findOne({
-    email: req.body.email
-  }).exec((err: any, user: any) => {
-    if (err) {
-      return res.status(500).send({
-        message: 'Could not find a user.',
-        error: err
-      });
-    }
-
+  try {
+    const user = await User.findOne({
+      email: req.body.email
+    });
     if (!user) {
-      return res.status(404).send({ message: 'User Not found.' });
-    }
-
-    const passwordIsValid = bcrypt.compareSync(
-      req.body.password,
-      user.password
-    );
-
-    if (!passwordIsValid) {
-      return res.status(401).send({
-        accessToken: null,
-        message: 'Invalid password.'
+      return res.status(404).send({
+        message: `User with email: ${req.body.email} not found.`
       });
+    } else {
+      const passwordIsValid = bcrypt.compareSync(
+        req.body.password,
+        user.password
+      );
+      if (!passwordIsValid) {
+        return res.status(401).send({
+          accessToken: null,
+          message: 'Invalid password.'
+        });
+      } else {
+        const token = jwt.sign(
+          {
+            id: user.id,
+            role: user.role
+          },
+            config.secret, 
+          {
+            expiresIn: 86400 // 24 hours
+          }
+        );
+        return res.status(200).send({
+          user,
+          accessToken: token
+        });
+      }
     }
-
-    const token = JWT.sign({ id: user.id }, config.secret, {
-      expiresIn: 86400 // 24 hours
+  } catch (err: any) {
+    return res.status(500).send({
+      message: 'Error retrieving user from database.',
+      error: err.message
     });
-
-    return res.status(200).send({
-      user,
-      accessToken: token
-    });
-  });
+  }
 };
 
 // logout user
