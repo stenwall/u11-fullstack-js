@@ -5,38 +5,50 @@ import models from '../models';
 const Comment = models.Comment;
 const Post = models.Post;
 
-// create and save a new comment
+// create and save new comment
 export const createComment = async (req: Request, res: Response) => {
   if (!req.body) {
     res.status(400).send({ message: 'Cannot be empty.' });
     return;
   }
 
+  const id = req.params.postId;
+
+  const comment = new Comment({
+    body: req.body.body,
+    user_id: req.userId
+  });
+
   try {
-    const comment = await Comment.create(req.body);
-    await Post.findByIdAndUpdate(
-      req.userId,
-      { $push: { comments: comment?._id } },
+    const post = await Post.findByIdAndUpdate(
+      id,
+      { $push: { comments: comment._id } },
       { new: true, useFindAndModify: false }
     );
-    return res.status(201).send({
-      message: 'Comment created successfully.',
-      comment,
-    });
+    if (!post) {
+      return res.status(404).send({ message: `Post with id ${id} not found.` });
+    } else {
+      const savedComment = await comment.save();
+      return res.status(201).send({
+        message: 'Comment created successfully.',
+        comment: savedComment,
+        post
+      });
+    }
   } catch (err: any) {
-    return res.status(400).send({
+    return res.status(500).send({
       message: 'Error saving comment to database.',
       error: err.message
     });
   }
 };
 
-// find comments by post id
-export const findCommentsByPost = async (req: Request, res: Response) => {
-  const id = req.params.id;
+// get post populated with comments
+export const getPostWithComments = async (req: Request, res: Response) => {
+  const id = req.params.postId;
 
   try {
-    const post = await Post.findById(id);
+    const post = await Post.findById(id).populate('comments', '-__v');
     if (!post) {
       return res.status(404).send({ message: `Post with id ${id} not found.` });
     } else {
@@ -48,7 +60,7 @@ export const findCommentsByPost = async (req: Request, res: Response) => {
       error: err.message
     });
   }
-};
+}
 
 // update comment by id
 export const updateComment = async (req: Request, res: Response) => {
@@ -66,17 +78,22 @@ export const updateComment = async (req: Request, res: Response) => {
     });
     if (!comment) {
       return res.status(404).send({
-        message: `Cannot update comment with id ${id}, maybe it was not found.`
+        message: `Cannot update comment with id: ${id}, maybe it was not found.`
+      });
+    }
+    if (comment && comment.user_id !== req.userId) {
+      return res.status(404).send({
+        message: `Comment with id: ${id} does not belong to you and cannot be edited.`
       });
     } else {
       return res.status(200).send({
-        message: 'Post updated successfully.',
+        message: 'Comment updated successfully.',
         comment
       });
     }
   } catch (err: any) {
     return res.status(500).send({
-      message: `Error updating comment with id ${id}.`,
+      message: `Error updating comment with id: ${id}.`,
       error: err.message
     });
   }
@@ -90,7 +107,12 @@ export const deleteComment = async (req: Request, res: Response) => {
     const comment = await Comment.findByIdAndRemove(id);
     if (!comment) {
       return res.status(404).send({
-        message: `Cannot delete comment with id ${id}, maybe it was not found.`
+        message: `Cannot delete comment with id: ${id}, maybe it was not found.`
+      });
+    }
+    if (comment && comment.user_id !== req.userId) {
+      return res.status(404).send({
+        message: `Comment with id: ${id} does not belong to you and cannot be deleted.`
       });
     } else {
       return res.status(200).send({
@@ -99,7 +121,7 @@ export const deleteComment = async (req: Request, res: Response) => {
     }
   } catch (err: any) {
     return res.status(500).send({
-      message: `Error deleting comment with id ${id}.`,
+      message: `Error deleting comment with id: ${id}.`,
       error: err.message
     });
   }
