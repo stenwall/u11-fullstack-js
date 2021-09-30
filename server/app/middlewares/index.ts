@@ -1,8 +1,10 @@
-import authJWT from './authJWT';
+import auth from './auth.middleware';
 import verifyRegister from './verifyRegister';
+import verifyToken from './verifyToken.middleware';
 
 export default {
-  authJWT,
-  verifyRegister
+  auth,
+  verifyRegister,
+  verifyToken
 }
   
