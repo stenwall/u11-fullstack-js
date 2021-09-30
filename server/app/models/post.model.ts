@@ -4,7 +4,7 @@ import { UserDocument, CommentDocument } from './';
 export interface PostDocument extends Document {
   body: string;
   user_id: UserDocument['_id'];
-  comments: Types.Array<CommentDocument['id']>;
+  comments: Types.Array<CommentDocument['_id']>;
 }
 
 const PostSchema = new Schema<PostDocument>(

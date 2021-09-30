@@ -57,38 +57,35 @@ const UserSchema = new Schema<UserDocument>(
     house_id: {
       type: Schema.Types.ObjectId,
       ref: 'House'
-    },
+    }
   },
   {
     timestamps: true
   }
 );
 
-// Virtuals
-// UserSchema.virtual("fullName").get(function() {
-//   return this.firstName + this.lastName
-// })
+// virtuals
+UserSchema.virtual('posts', {
+  ref: 'Post',
+  foreignField: 'user_id',
+  localField: '_id'
+});
 
-// Methods
-// UserSchema.methods.getGender = function() {
-//   return this.gender > 0 "Male" : "Female"
-// }
+UserSchema.virtual('comments', {
+  ref: 'Comment',
+  foreignField: 'user_id',
+  localField: '_id'
+});
 
-// Static methods
-// UserSchema.statics.findWithCompany = function(id) {
-//   return this.findById(id).populate("company").exec()
-// }
+// UserSchema.virtual('fullName').get(() => {
+//   return `${UserSchema.firstname} ${lastname}`;
+// });
 
 // Document middlewares
 // UserSchema.pre("save", function(next) {
 //   if (this.isModified("password")) {
 //     this.password = hashPassword(this.password)
 //   }
-// });
-
-// Query middlewares
-// UserSchema.post("findOneAndUpdate", async function(doc) {
-//   await updateCompanyReference(doc);
 // });
 
 const User = model<UserDocument>('User', UserSchema);
