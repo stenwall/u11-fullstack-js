@@ -13,6 +13,8 @@ export interface UserDocument extends Document {
   groups?: Types.Array<string>;
   role: string;
   house_id: HouseDocument['id'];
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const UserSchema = new Schema<UserDocument>(
@@ -76,17 +78,6 @@ UserSchema.virtual('comments', {
   foreignField: 'user_id',
   localField: '_id'
 });
-
-// UserSchema.virtual('fullName').get(() => {
-//   return `${UserSchema.firstname} ${lastname}`;
-// });
-
-// Document middlewares
-// UserSchema.pre("save", function(next) {
-//   if (this.isModified("password")) {
-//     this.password = hashPassword(this.password)
-//   }
-// });
 
 const User = model<UserDocument>('User', UserSchema);
 
