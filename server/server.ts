@@ -25,8 +25,8 @@ const corsOptions: object = {
 
 const mongooseOptions: object = {
   dbName: process.env.DB_NAME as string,
-  user: process.env.DB_USER as string,
-  pass: process.env.DB_PASS as string,
+  // user: process.env.DB_USER as string,
+  // pass: process.env.DB_PASS as string,
   useNewUrlParser: true,
   useUnifiedTopology: true
 };
@@ -55,7 +55,7 @@ const initial = () => {
         address: 'Gällerstagränd',
         streetnumber: 11,
         zipcode: 12476,
-        city: 'Bandhagen',
+        city: 'Bandhagen'
       })
       .save((err: any) => {
         if (err) {
@@ -66,11 +66,9 @@ const initial = () => {
       });
     }
   });
-}
+};
 
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}.`);
-  routes.auth(app, router);
-  routes.user(app, router);
-  routes.post(app, router);
+  routes(app);
 });

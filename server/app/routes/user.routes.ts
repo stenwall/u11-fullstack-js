@@ -1,7 +1,7 @@
 // routes for users
 import { Router } from 'express';
-import middlewares from '../middlewares';
 import * as controller from '../controllers/user.controller';
+import middlewares from '../middlewares';
 
 const verifyOwner = middlewares.auth.verifyOwner;
 const verifyToken = middlewares.verifyToken;

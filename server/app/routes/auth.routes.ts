@@ -1,31 +1,26 @@
 // routes for authentication
-import { Request, Response, NextFunction, Router, Application } from 'express';
-import middlewares from '../middlewares';
+import { Router } from 'express';
 import * as controller from '../controllers/auth.controller';
+import middlewares from '../middlewares';
 
-const authRoutes = (app: Application, router: Router) => {
-  app.use((req: Request, res: Response, next: NextFunction) => {
-    res.header(
-      'Access-Control-Allow-Headers',
-      'x-access-token, Origin, Content-Type, Accept'
-    );
-    next();
-  });
+const verifyRegister = middlewares.verifyRegister;
+const verifyToken = middlewares.verifyToken;
+const router = Router();
 
-  // register new user
-  router.post(
-    '/register',
-    [
-      middlewares.verifyRegister.checkDuplicates,
-      middlewares.verifyRegister.checkRoleExist
-    ],
-    controller.register
-  );
+// register new user
+router.post(
+  '/register',
+  [
+    verifyRegister.checkDuplicates,
+    verifyRegister.checkRoleExist
+  ],
+  controller.register
+);
 
-  // login user
-  router.post('/login', controller.login);
+// login user
+router.post('/login', controller.login);
 
-  app.use('/api/auth', router);
-};
+// logout user
+router.post('/logout', [verifyToken], controller.logout)
 
-export default authRoutes;
+export default router;
