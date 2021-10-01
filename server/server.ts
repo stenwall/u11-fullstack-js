@@ -1,17 +1,13 @@
-// import dotenv from 'dotenv';
-// import dotenv from 'dotenv/config';
-require('dotenv').config();
+import './config/dotenv.config';
+import config from './config';
 import mongoose from 'mongoose';
 import express from 'express';
 import cors from 'cors';
-import config from './config';
 import models from './app/models';
 import routes from './app/routes';
 
 const app = express();
 const router = express.Router();
-
-// dotenv.config();
 
 const port: number = config.PORT as unknown as number;
 const mongoURI: string = config.DB_URI as string;
