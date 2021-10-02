@@ -21,6 +21,12 @@
     "**/*.ts",
     "config/index.ts",
     "@types/express/index.d.ts",
-    "server.js"  ],
-  "exclude": ["node_modules", "**/*.spec.ts", "@types/**/*", "dist/**/*"]
+    "server.js"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts",
+    "@types/**/*",
+    "dist/**/*"
+  ]
 }

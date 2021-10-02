@@ -31,13 +31,15 @@ export const register = async (req: Request, res: Response) => {
       { new: true, useFindAndModify: false }
     );
     if (!house) {
-      res.status(404).send({ message: `House with id: ${user.house_id} not found.` });
+      res.status(404).send({
+        message: `House with id: ${user.house_id} not found.`
+      });
     } else {
       const savedUser = await user.save();
       if (user.role === 'admin') {
         await House.findByIdAndUpdate(
           savedUser.house_id,
-          { $push: { admins: savedUser._id} },
+          { $push: { admins: savedUser._id } },
           { new: true, useFindAndModify: false }
         );
       }
@@ -117,7 +119,6 @@ export const login = async (req: Request, res: Response) => {
 
 // logout user
 export const logout = async (req: Request, res: Response) => {
-
   // const { token } = req.body;
   // refreshTokens = refreshTokens.filter(token => token !== token);
   res.send('Not able to logout yet...');
