@@ -2,7 +2,7 @@
 import { Request, Response } from 'express';
 import * as jwt from 'jsonwebtoken';
 import * as bcrypt from 'bcryptjs';
-import config from '../../config/auth.config';
+import config from '../../config';
 import models from '../models';
 
 const User = models.User;
@@ -88,7 +88,7 @@ export const login = async (req: Request, res: Response) => {
             id: user.id,
             role: user.role
           },
-          config.secret,
+          config.PRIVATE_KEY,
           {
             expiresIn: '30m'
           }

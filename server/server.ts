@@ -7,19 +7,15 @@ import models from './app/models';
 import routes from './app/routes';
 
 const app = express();
-const router = express.Router();
-
-const port: number = config.PORT as unknown as number;
-const mongoURI: string = config.DB_URI as string;
 const House = models.House;
 
 mongoose.Promise = global.Promise;
 
 const corsOptions: object = {
-  origin: config.CLIENT_URL as string
+  origin: config.CLIENT_URL
 };
 
-const mongooseOptions: object = {
+const options: object = {
   // dbName: process.env.DB_NAME as string,
   // user: process.env.DB_USER as string,
   // pass: process.env.DB_PASS as string,
@@ -32,7 +28,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 mongoose
-  .connect(mongoURI, mongooseOptions)
+  .connect(config.DB_URI, options)
   .then(() => {
     console.log('Connected to the database.');
     initial();
@@ -46,7 +42,7 @@ const initial = () => {
   House.estimatedDocumentCount((err: any, count: number) => {
     if (!err && count === 0) {
       new House({
-        name: 'Höstvetet 1',
+        name: 'Höstvetet',
         desc: 'Grupp för alla som bor i glashuset i Ormkärr',
         address: 'Gällerstagränd',
         streetnumber: 11,
@@ -58,13 +54,13 @@ const initial = () => {
           console.log('error', err);
         }
 
-        console.log('added `Höstvetet 1` to house collection');
+        console.log('added `Höstvetet` to house collection');
       });
     }
   });
 };
 
-app.listen(port, () => {
-  console.log(`Server is running on port: ${port}.`);
+app.listen(config.PORT, () => {
+  console.log(`Server is running on port: ${config.PORT}.`);
   routes(app);
 });
