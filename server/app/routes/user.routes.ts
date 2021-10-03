@@ -1,40 +1,19 @@
-// routes for authorization
-import { Request, Response, NextFunction, Router, Application } from 'express';
-import middlewares from '../middlewares';
+// routes for users
+import { Router } from 'express';
 import * as controller from '../controllers/user.controller';
+import middlewares from '../middlewares';
 
-const authJWT = middlewares.authJWT;
+const verifyOwner = middlewares.auth.verifyOwner;
+const verifyToken = middlewares.verifyToken;
+const router = Router();
 
-const userRoutes = (app: Application, router: Router) => {
-  app.use((req: Request, res: Response, next: NextFunction) => {
-    res.header(
-      'Access-Control-Allow-Headers',
-      'x-access-token, Origin, Content-Type, Accept'
-    );
-    next();
-  });
+// get user by id
+router.get('/:id', [verifyToken], controller.getUser);
 
-  // get public content
-  router.get('/api/test/all', controller.publicAccess);
+// update user by id
+router.put('/:id', [verifyToken, verifyOwner], controller.updateUser);
 
-  // get user content
-  router.get('/api/test/user', [authJWT.verifyToken], controller.userAccess);
+// get all posts by user id
+router.get('/:id/posts', [verifyToken], controller.getPostsByUser);
 
-  // get admin content
-  router.get(
-    '/api/test/admin',
-    [authJWT.verifyToken, authJWT.isAdmin],
-    controller.adminAccess
-  );
-
-  // get super-admin content
-  router.get(
-    '/super-admin',
-    [authJWT.verifyToken, authJWT.isSuperAdmin],
-    controller.superAdminAccess
-  );
-
-  // app.use('/api/test', router);
-};
-
-export default userRoutes;
+export default router;

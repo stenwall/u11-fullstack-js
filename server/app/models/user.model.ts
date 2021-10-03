@@ -13,6 +13,8 @@ export interface UserDocument extends Document {
   groups?: Types.Array<string>;
   role: string;
   house_id: HouseDocument['id'];
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const UserSchema = new Schema<UserDocument>(
@@ -57,46 +59,25 @@ const UserSchema = new Schema<UserDocument>(
     house_id: {
       type: Schema.Types.ObjectId,
       ref: 'House'
-    },
+    }
   },
   {
     timestamps: true
   }
 );
 
-// Virtuals
-// UserSchema.virtual("fullName").get(function() {
-//   return this.firstName + this.lastName
-// })
+// virtuals
+UserSchema.virtual('posts', {
+  ref: 'Post',
+  foreignField: 'user_id',
+  localField: '_id'
+});
 
-// Methods
-// UserSchema.methods.getGender = function() {
-//   return this.gender > 0 "Male" : "Female"
-// }
-
-// Static methods
-// UserSchema.statics.findWithCompany = function(id) {
-//   return this.findById(id).populate("company").exec()
-// }
-
-// Document middlewares
-// UserSchema.pre("save", function(next) {
-//   if (this.isModified("password")) {
-//     this.password = hashPassword(this.password)
-//   }
-// });
-
-// Query middlewares
-// UserSchema.post("findOneAndUpdate", async function(doc) {
-//   await updateCompanyReference(doc);
-// });
-
-//   .method('toJSON', function () {
-//     const { __v, _id, ...object } = this.toObject();
-//     object.id = _id;
-//     return object;
-//   })
-// );
+UserSchema.virtual('comments', {
+  ref: 'Comment',
+  foreignField: 'user_id',
+  localField: '_id'
+});
 
 const User = model<UserDocument>('User', UserSchema);
 

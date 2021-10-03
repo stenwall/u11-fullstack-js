@@ -3,7 +3,7 @@ import House, { HouseDocument } from './house.model';
 import Post, { PostDocument } from './post.model';
 import Comment, { CommentDocument } from './comment.model';
 
-export const dbModel = {
+export default {
   User,
   House,
   Post,
@@ -11,4 +11,9 @@ export const dbModel = {
   ROLES: ['user', 'admin', 'super-admin']
 };
 
-export { UserDocument, HouseDocument, PostDocument, CommentDocument};
+export {
+  UserDocument,
+  HouseDocument,
+  PostDocument,
+  CommentDocument
+};

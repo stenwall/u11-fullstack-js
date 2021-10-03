@@ -1,19 +1,18 @@
 // controller for authentication
 import { Request, Response } from 'express';
-import * as JWT from 'jsonwebtoken';
+import * as jwt from 'jsonwebtoken';
 import * as bcrypt from 'bcryptjs';
-import config from '../../config/auth.config';
-import { dbModel } from '../models';
+import config from '../../config';
+import models from '../models';
 
-const User = dbModel.User;
+const User = models.User;
+const House = models.House;
 
-// create and save a new user
+// create and save new user
 export const register = async (req: Request, res: Response) => {
-  // validate request
   if (!req.body) {
-    return res.status(400).send({ message: 'Cannot be empty.' });
+    res.status(400).send({ message: 'Cannot be empty.' });
   }
-
   const user = new User({
     username: req.body.username,
     firstname: req.body.firstname,
@@ -23,212 +22,108 @@ export const register = async (req: Request, res: Response) => {
     password: bcrypt.hashSync(req.body.password, 8),
     status: req.body.status ? req.body.status : true,
     role: req.body.role ? req.body.role : 'user',
-    house_id: req.body.house
   });
-
   try {
-    const savedUser = await user.save();
-    return res.status(201).send({
-      message: 'User successfully registered.',
-      user: {
-        username: savedUser.username,
-        firstname: savedUser.firstname,
-        lastname: savedUser.lastname,
-        role: savedUser.role,
-        house_id: savedUser.house_id,
-        id: savedUser._id
+    // temporarily save all users to the only available house, created on init
+    const house = await House.findOne({
+      name: 'Höstvetet'
+    })
+    if (!house) {
+      res.status(404).send({
+        message: `No house to save user to found.`
+      });
+    } else {
+      user.house_id = house._id;
+      const savedUser = await user.save();
+      await House.findByIdAndUpdate(
+        savedUser.house_id,
+        { $push: { members: savedUser._id } },
+        { new: true, useFindAndModify: false }
+      );
+      if (user.role === 'admin') {
+        await House.findByIdAndUpdate(
+          savedUser.house_id,
+          { $push: { admins: savedUser._id } },
+          { new: true, useFindAndModify: false }
+        );
       }
-    });
+      res.status(201).send({
+        message: 'User successfully registered.',
+        user: {
+          id: savedUser._id,
+          username: savedUser.username,
+          firstname: savedUser.firstname,
+          lastname: savedUser.lastname,
+          email: savedUser.email,
+          role: savedUser.role,
+          house: house.name
+        }
+      });
+    }
   } catch (err: any) {
-    return res.status(400).send({
+    res.status(500).send({
       message: 'Error saving user to database.',
       error: err.message
     });
   }
 };
 
+// login user
 export const login = async (req: Request, res: Response) => {
-  User.findOne({
-    email: req.body.email
-  }).exec((err: any, user: any) => {
-    if (err) {
-      return res.status(500).send({
-        message: 'Could not find a user.',
-        error: err
-      });
-    }
-
+  try {
+    const user = await User.findOne({
+      email: req.body.email
+    });
     if (!user) {
-      return res.status(404).send({ message: 'User Not found.' });
-    }
-
-    const passwordIsValid = bcrypt.compareSync(
-      req.body.password,
-      user.password
-    );
-
-    if (!passwordIsValid) {
-      return res.status(401).send({
-        accessToken: null,
-        message: 'Invalid Password!'
+      return res.status(404).send({
+        message: `User with email: ${req.body.email} not found.`
       });
+    } else {
+      const passwordIsValid = bcrypt.compareSync(
+        req.body.password,
+        user.password
+      );
+      if (!passwordIsValid) {
+        return res.status(401).send({
+          accessToken: null,
+          message: 'Invalid password.'
+        });
+      } else {
+        const token = jwt.sign(
+          {
+            id: user.id,
+            role: user.role
+          },
+          config.PRIVATE_KEY,
+          {
+            expiresIn: '30m'
+          }
+        );
+        res.status(200).send({
+          user: {
+            id: user._id,
+            username: user.username,
+            firstname: user.firstname,
+            lastname: user.lastname,
+            email: user.email,
+            role: user.role,
+            house: user.house_id
+          },
+          accessToken: token
+        });
+      }
     }
-
-    const token = JWT.sign({ id: user.id }, config.secret, {
-      expiresIn: 86400 // 24 hours
+  } catch (err: any) {
+    res.status(500).send({
+      message: 'Error retrieving user from database.',
+      error: err.message
     });
-
-    return res.status(200).send({
-      user: {
-        username: user.username,
-        firstname: user.firstname,
-        lastname: user.lastname,
-        role: user.role,
-        house: user.house,
-        id: user._id
-      },
-      accessToken: token
-    });
-  });
+  }
 };
 
-// const User = dbModel.User;
-
-// // create and save a new user
-// export const create = async (req: Request, res: Response) => {
-//   // validate request
-//   if (!req.body) {
-//     res.status(400).send({ message: 'Cannot be empty.' });
-//     return;
-//   }
-
-//   const user = new User({
-//     username: req.body.username,
-//     firstname: req.body.firstname,
-//     lastname: req.body.lastname,
-//     desc: req.body.body,
-//     email: req.body.email,
-//     password: req.body.password,
-//     status: req.body.status ? req.body.status : true,
-//     role: req.body.status ? req.body.status : 'user',
-//     house: req.body.house
-//   });
-
-//   try {
-//     const savedUser = await user.save();
-//     res.send(savedUser);
-//     res.status(201).send({
-//       message: 'User created successfully.'
-//     })
-//   } catch (err: any) {
-//     res.status(400).send({
-//       message: err.message || 'Error saving user to database.'
-//     });
-//   }
-
-//   // user
-//   //   .save()
-//   //   .then((data: any) => {
-//   //     console.log(data);
-//   //     res.send(data);
-//   //     res.status(201).send({
-//   //       message: 'User created successfully.'
-//   //     });
-//   //     return;
-//   //   })
-//   //   .catch((err: any) => {
-//   //     res.status(500).send({
-//   //       message: err.message || 'Error saving user to database.'
-//   //     });
-//   //   });
-// };
-
-// // retrieve all users
-// // exports.findAll = (req: Request, res: Response) => {
-// //   const title = req.query.title;
-// //   const condition = title
-// //     ? { title: { $regex: new RegExp(title), $options: 'i' } }
-// //     : {};
-
-// //   User.find(condition)
-// //     .then(data => {
-// //       res.send(data);
-// //     })
-// //     .catch(err => {
-// //       res.status(500).send({
-// //         message: err.message || 'Some error occurred while retrieving users.'
-// //       });
-// //     });
-// // };
-
-// // find user by id
-// exports.findOne = (req: Request, res: Response) => {
-//   const id = req.params.id;
-
-//   User.findById(id)
-//     .then(data => {
-//       if (!data) {
-//         res.status(404).send({ message: `User with id ${id} not found` });
-//       } else {
-//         res.status(200).send(data);
-//       }
-//     })
-//     .catch(err => {
-//       res.status(500).send({
-//         message: err.message || `Error retrieving user with id ${id}.`
-//       });
-//     });
-// };
-
-// // update user by id
-// exports.update = (req: Request, res: Response) => {
-//   if (!req.body) {
-//     return res.status(400).send({
-//       message: 'Data to update cannot be empty.'
-//     });
-//   }
-
-//   const id = req.params.id;
-
-//   User.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
-//     .then(data => {
-//       if (!data) {
-//         res.status(404).send({
-//           message: `Cannot update user with id ${id}, maybe it was not found.`
-//         });
-//       } else {
-//         res.status(200).send({
-//           message: 'user updated successfully.',
-//           data
-//         });
-//       }
-//     })
-//     .catch(err => {
-//       res.status(500).send({
-//         message: `Error updating with id ${id}.`
-//       });
-//     });
-// };
-
-// // delete user by id
-// exports.delete = (req: Request, res: Response) => {
-//   const id = req.params.id;
-
-//   User.findByIdAndRemove(id)
-//     .then(data => {
-//       if (!data) {
-//         res.status(404).send({
-//           message: `Cannot delete user with id ${id}, maybe it was not found.`
-//         });
-//       } else {
-//         res.send({
-//           message: 'user was deleted successfully.'
-//         });
-//       }
-//     })
-//     .catch(err => {
-//       res.status(500).send({
-//         message: `Error deleting user with id ${id}`
-//       });
-//     });
-// };
+// logout user
+export const logout = async (req: Request, res: Response) => {
+  // const { token } = req.body;
+  // refreshTokens = refreshTokens.filter(token => token !== token);
+  res.send('Not able to logout yet...');
+};
