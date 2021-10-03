@@ -2,11 +2,7 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "es6",
-    // "strictNullChecks": true,
     "moduleResolution": "node",
-    // "noUnusedParameters": true,
-    // "noUnusedLocals": true,
-    "declaration": true,
     "strict": true,
     "rootDir": "./",
     "esModuleInterop": true,
