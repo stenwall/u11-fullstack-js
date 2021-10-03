@@ -60,6 +60,12 @@ const initial = () => {
   });
 };
 
+app.set('view engine', 'pug');
+
+app.get('/', (req: express.Request, res: express.Response) => {
+  res.render('index')
+})
+
 app.listen(config.PORT, () => {
   console.log(`Server is running on port: ${config.PORT}.`);
   routes(app);
