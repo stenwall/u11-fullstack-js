@@ -22,20 +22,24 @@ export const register = async (req: Request, res: Response) => {
     password: bcrypt.hashSync(req.body.password, 8),
     status: req.body.status ? req.body.status : true,
     role: req.body.role ? req.body.role : 'user',
-    house_id: '6156ccd36f6453c198e376c9'
   });
   try {
-    const house = await House.findByIdAndUpdate(
-      user.house_id,
-      { $push: { members: user._id } },
-      { new: true, useFindAndModify: false }
-    );
+    // temporarily save all users to the only available house, created on init
+    const house = await House.findOne({
+      name: 'Höstvetet'
+    })
     if (!house) {
       res.status(404).send({
-        message: `House with id: ${user.house_id} not found.`
+        message: `No house to save user to found.`
       });
     } else {
+      user.house_id = house._id;
       const savedUser = await user.save();
+      await House.findByIdAndUpdate(
+        savedUser.house_id,
+        { $push: { members: savedUser._id } },
+        { new: true, useFindAndModify: false }
+      );
       if (user.role === 'admin') {
         await House.findByIdAndUpdate(
           savedUser.house_id,
@@ -52,7 +56,7 @@ export const register = async (req: Request, res: Response) => {
           lastname: savedUser.lastname,
           email: savedUser.email,
           role: savedUser.role,
-          house_id: savedUser.house_id
+          house: house.name
         }
       });
     }
