@@ -1,0 +1,14 @@
+{
+  "name": "My neck of the woods",
+  "description": "This is just a school assignment for now.",
+  "repository": "https://github.com/chas-academy/u11-fullstack-js-stenwall.git",
+  "success_url": "/",
+  "buildpacks": [
+    {
+      "url": "https://github.com/timanovsky/subdir-heroku-buildpack"
+    },
+    {
+      "url": "heroku/nodejs"
+    }
+  ]
+}
