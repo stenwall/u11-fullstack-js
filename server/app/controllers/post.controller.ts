@@ -7,7 +7,7 @@ const Post = models.Post;
 // create and save new post
 export const createPost = async (req: any, res: Response) => {
   if (!req.body) {
-    res.status(400).send({ message: 'Cannot be empty.' });
+    return res.status(400).send({ message: 'Cannot be empty.' });
   }
   const post = new Post({
     body: req.body.body,
@@ -15,12 +15,12 @@ export const createPost = async (req: any, res: Response) => {
   });
   try {
     const savedPost = await post.save();
-    res.status(201).send({
+    return res.status(201).send({
       message: 'Post created successfully.',
       post: savedPost
     });
   } catch (err: any) {
-    res.status(500).send({
+    return res.status(500).send({
       message: 'Error saving post to database.',
       error: err.message
     });
@@ -33,14 +33,14 @@ export const getPost = async (req: Request, res: Response) => {
   try {
     const post = await Post.findById(id);
     if (!post) {
-      res
-        .status(404)
-        .send({ message: `Post with id: ${id} not found.` });
+      return res.status(404).send({
+        message: `Post with id: ${id} not found.`
+      });
     } else {
-      res.status(200).send(post);
+      return res.status(200).send(post);
     }
   } catch (err: any) {
-    res.status(500).send({
+    return res.status(500).send({
       message: `Error retrieving post with id: ${id}.`,
       error: err.message
     });
@@ -50,7 +50,7 @@ export const getPost = async (req: Request, res: Response) => {
 // update post by id
 export const updatePost = async (req: Request, res: Response) => {
   if (!req.body) {
-    res.status(400).send({
+    return res.status(400).send({
       message: 'Data to update cannot be empty.'
     });
   }
@@ -60,16 +60,16 @@ export const updatePost = async (req: Request, res: Response) => {
       useFindAndModify: false
     });
     if (!post) {
-      res.status(404).send({
+      return res.status(404).send({
         message: `Cannot update post with id: ${id}, maybe it was not found.`
       });
     }
-    res.status(200).send({
+    return res.status(200).send({
       message: 'Post updated successfully.',
       post
     });
   } catch (err: any) {
-    res.status(500).send({
+    return res.status(500).send({
       message: `Error updating post with id: ${id}.`,
       error: err.message
     });
@@ -82,21 +82,21 @@ export const deletePost = async (req: Request, res: Response) => {
   try {
     const post = await Post.findByIdAndRemove(id);
     if (!post) {
-      res.status(404).send({
+      return res.status(404).send({
         message: `Cannot delete post with id: ${id}, maybe it was not found.`
       });
     }
     if (post && post.user_id !== req.userId) {
-      res.status(404).send({
+      return res.status(404).send({
         message: `Post with id: ${id} do not belong to you and cannot be deleted.`
       });
     } else {
-      res.status(200).send({
+      return res.status(200).send({
         message: 'Post deleted successfully.'
       });
     }
   } catch (err: any) {
-    res.status(500).send({
+    return res.status(500).send({
       message: `Error deleting post with id: ${id}.`,
       error: err.message
     });

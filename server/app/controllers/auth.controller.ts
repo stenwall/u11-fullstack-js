@@ -11,7 +11,7 @@ const House = models.House;
 // create and save new user
 export const register = async (req: Request, res: Response) => {
   if (!req.body) {
-    res.status(400).send({ message: 'Cannot be empty.' });
+    return res.status(400).send({ message: 'Cannot be empty.' });
   }
   const user = new User({
     username: req.body.username,
@@ -29,7 +29,7 @@ export const register = async (req: Request, res: Response) => {
       name: 'Höstvetet'
     })
     if (!house) {
-      res.status(404).send({
+      return res.status(404).send({
         message: `No house to save user to found.`
       });
     } else {
@@ -47,7 +47,7 @@ export const register = async (req: Request, res: Response) => {
           { new: true, useFindAndModify: false }
         );
       }
-      res.status(201).send({
+      return res.status(201).send({
         message: 'User successfully registered.',
         user: {
           id: savedUser._id,
@@ -61,7 +61,7 @@ export const register = async (req: Request, res: Response) => {
       });
     }
   } catch (err: any) {
-    res.status(500).send({
+    return res.status(500).send({
       message: 'Error saving user to database.',
       error: err.message
     });
@@ -99,7 +99,7 @@ export const login = async (req: Request, res: Response) => {
             expiresIn: '30m'
           }
         );
-        res.status(200).send({
+        return res.status(200).send({
           user: {
             id: user._id,
             username: user.username,
@@ -114,7 +114,7 @@ export const login = async (req: Request, res: Response) => {
       }
     }
   } catch (err: any) {
-    res.status(500).send({
+    return res.status(500).send({
       message: 'Error retrieving user from database.',
       error: err.message
     });
