@@ -15,11 +15,6 @@ const Feed: NextPageWithLayout = () => {
 
       <ul>
         <li>
-          <Link href="/info">
-            <a>House/hood info</a>
-          </Link>
-        </li>
-        <li>
           <Link href="/profile">
             <a>Your profile</a>
           </Link>

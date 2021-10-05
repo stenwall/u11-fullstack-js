@@ -12,10 +12,25 @@ const BottomNavbar = () => {
 
   const btnLinks = {
     home: (
-      <Link href="/info">
+      <Link href="/feed">
         <Home />
       </Link>
     ),
+    groupes: (
+      <Link href="/groupes">
+        <Groups />
+      </Link>
+    ),
+    friends: (
+      <Link href="/friends">
+        <Favorite />
+      </Link>
+    ),
+    favorites: (
+      <Link href="/favorites">
+        <Bookmark />
+      </Link>
+    )
   };
 
   return (
@@ -25,25 +40,20 @@ const BottomNavbar = () => {
       onChange={handleChange}
     >
       <BottomNavigationAction
-        label="Home"
         value="home"
         icon={btnLinks.home}
       />
       <BottomNavigationAction
-        color="text"
-        label="Groupes"
         value="groupes"
-        icon={<Groups />}
+        icon={btnLinks.groupes}
       />
       <BottomNavigationAction
-        label="Friends"
         value="friends"
-        icon={<Favorite />}
+        icon={btnLinks.friends}
       />
       <BottomNavigationAction
-        label="Favorites"
         value="favorites"
-        icon={<Bookmark />}
+        icon={btnLinks.favorites}
       />
     </BottomNavigation>
   );
