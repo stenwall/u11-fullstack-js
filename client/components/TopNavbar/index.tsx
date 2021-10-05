@@ -5,8 +5,12 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import { AccountCircle, Search } from '@mui/icons-material';
+import Link from 'next/link';
+import { Button } from '@mui/material';
 
-interface Props {}
+interface Props {
+  onClick: any;
+}
 
 const TopNavbar = (props: Props) => {
   const router = useRouter();
@@ -14,16 +18,21 @@ const TopNavbar = (props: Props) => {
 
   return (
     <>
-      <Box sx={{ flexGrow: 1 }}>
+      <Box sx={{ flexGrow: 1 }} onClick={props.onClick}>
         <AppBar position="fixed">
           <Toolbar>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              {props.title || 'Name of house'}
-            </Typography>
-            <IconButton size="large" color="inherit" aria-label="search">
+            <Link href="/info">
+              <Button
+                value="info"
+                sx={{ flexGrow: 1 }}
+              >
+                  Name of house
+              </Button>
+            </Link>
+            <IconButton value="search" size="large" color="inherit" aria-label="search">
               <Search />
             </IconButton>
-            <IconButton size="large" color="inherit" aria-label="menu">
+            <IconButton value="profile" size="large" color="inherit" aria-label="menu">
               <AccountCircle />
             </IconButton>
           </Toolbar>

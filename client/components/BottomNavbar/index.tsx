@@ -3,12 +3,12 @@ import { Home, Groups, Favorite, Bookmark } from '@mui/icons-material';
 import { SyntheticEvent, useState } from 'react';
 import Link from 'next/link';
 
-const BottomNavbar = () => {
-  const [value, setValue] = useState('home');
+interface Props {
+  value: string;
+  onChange: any;
+}
 
-  const handleChange = (event: SyntheticEvent, newValue: string) => {
-    setValue(newValue);
-  };
+const BottomNavbar = (props: Props) => {
 
   const btnLinks = {
     home: (
@@ -36,8 +36,8 @@ const BottomNavbar = () => {
   return (
     <BottomNavigation
       sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }}
-      value={value}
-      onChange={handleChange}
+      value={props.value}
+      onChange={props.onChange}
     >
       <BottomNavigationAction
         value="home"
