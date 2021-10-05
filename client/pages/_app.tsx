@@ -1,11 +1,14 @@
-import '../styles/globals.css';
-import type { AppProps } from 'next/app';
+// import '../styles/globals.css';
+import type { ReactNode } from 'react';
+import type { AppLayoutProps } from 'next/app';
 import Head from 'next/head';
 import { CssBaseline } from '@mui/material';
 import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
 import theme from '../styles/theme';
 
-const MyApp = ({ Component, pageProps }: AppProps) => {
+const MyApp = ({ Component, pageProps }: AppLayoutProps) => {
+  const getLayout = Component.getLayout || ((page: ReactNode) => page);
+
   return (
     <>
       <Head>
@@ -23,7 +26,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
       <StyledEngineProvider injectFirst>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <Component {...pageProps} />
+          {getLayout(<Component {...pageProps} />)}
         </ThemeProvider>
       </StyledEngineProvider>
     </>
