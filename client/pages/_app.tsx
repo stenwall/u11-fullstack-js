@@ -1,4 +1,4 @@
-// import '../styles/globals.css';
+import '../styles/styles.scss';
 import type { ReactNode } from 'react';
 import type { AppLayoutProps } from 'next/app';
 import Head from 'next/head';
