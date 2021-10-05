@@ -1,7 +1,10 @@
-import type { NextPage } from 'next';
+import type { NextPageWithLayout } from 'next';
+import type { ReactNode } from 'react'
+import MainLayout from '../../components/layout/MainLayout';
 import Link from 'next/link';
 
-const UserProfile: NextPage = () => {
+const UserProfile: NextPageWithLayout = () => {
+
   return (
     <>
       <h1>User profile</h1>
@@ -14,5 +17,11 @@ const UserProfile: NextPage = () => {
     </>
   );
 };
+
+UserProfile.getLayout = (page: ReactNode) => {
+  return (
+    <MainLayout>{page}</MainLayout>
+  )
+}
 
 export default UserProfile;

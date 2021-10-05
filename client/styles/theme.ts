@@ -33,44 +33,7 @@ let theme = createTheme({
   },
   typography: {
     fontFamily: 'Roboto',
-  },
-  components: {
-    MuiBottomNavigation: {
-      styleOverrides: {
-        root: {
-          // color: '#e4e3dd'
-        },
-      },
-    },
-    MuiBottomNavigationAction: {
-      styleOverrides: {
-        root: {
-          '&.Mui-selected': {
-            color: '#e4e3dd'
-          },
-          '&.MuiBottomNavigationAction-iconOnly': {
-            color: '#395971'
-          },
-          '&.MuiBottomNavigationAction-label': {
-            opacity: '0 !important'
-          },
-        },
-      },
-    },
-  },
+  }
 });
-
-// theme = createTheme(theme, {
-//   components: {
-//     MuiBottomNavigation: {
-//       styleOverrides: {
-//         root: {
-//           backgroundColor: theme.palette.secondary,
-//           color: theme.palette.text
-//         },
-//       },
-//     },
-//   },
-// })
 
 export default theme;
