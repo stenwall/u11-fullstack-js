@@ -1,7 +1,9 @@
-import type { NextPage } from 'next';
+import type { NextPageWithLayout } from 'next';
+import type { ReactNode } from 'react'
+import MainLayout from '../../components/layout/MainLayout';
 import Link from 'next/link';
 
-const NewPost: NextPage = () => {
+const NewPost: NextPageWithLayout = () => {
   return (
     <>
       <h1>NewPost</h1>
@@ -14,5 +16,11 @@ const NewPost: NextPage = () => {
     </>
   );
 };
+
+NewPost.getLayout = (page: ReactNode) => {
+  return (
+    <MainLayout>{page}</MainLayout>
+  )
+}
 
 export default NewPost;

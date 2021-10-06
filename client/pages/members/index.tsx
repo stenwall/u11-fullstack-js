@@ -1,11 +1,19 @@
-import type { NextPage } from 'next';
+import type { NextPageWithLayout } from 'next';
+import type { ReactNode } from 'react'
+import MainLayout from '../../components/layout/MainLayout';
 
-const Members: NextPage = () => {
+const Members: NextPageWithLayout = () => {
   return (
     <>
       <h1>Members</h1>
     </>
   );
 };
+
+Members.getLayout = (page: ReactNode) => {
+  return (
+    <MainLayout>{page}</MainLayout>
+  )
+}
 
 export default Members;
