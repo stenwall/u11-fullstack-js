@@ -1,7 +1,9 @@
 import { useRouter } from 'next/router';
-import type { NextPage } from 'next';
+import type { NextPageWithLayout } from 'next';
+import type { ReactNode } from 'react'
+import MainLayout from '../../components/layout/MainLayout';
 
-const Member: NextPage = () => {
+const Member: NextPageWithLayout = () => {
   const router = useRouter();
   const { memberId } = router.query;
 
@@ -11,5 +13,11 @@ const Member: NextPage = () => {
     </>
   );
 };
+
+Member.getLayout = (page: ReactNode) => {
+  return (
+    <MainLayout>{page}</MainLayout>
+  )
+}
 
 export default Member;

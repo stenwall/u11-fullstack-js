@@ -1,7 +1,9 @@
-import type { NextPage } from 'next';
+import type { NextPageWithLayout } from 'next';
+import type { ReactNode } from 'react'
+import StartLayout from '../../components/layout/StartLayout';
 import Link from 'next/link';
 
-const Register: NextPage = () => {
+const Register: NextPageWithLayout = () => {
   return (
     <>
       <h1>Register</h1>
@@ -16,5 +18,11 @@ const Register: NextPage = () => {
     </>
   );
 };
+
+Register.getLayout = (page: ReactNode) => {
+  return (
+    <StartLayout>{page}</StartLayout>
+  )
+}
 
 export default Register;

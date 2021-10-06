@@ -1,7 +1,9 @@
-import type { NextPage } from 'next';
+import type { NextPageWithLayout } from 'next';
+import type { ReactNode } from 'react'
+import StartLayout from '../../components/layout/StartLayout';
 import Link from 'next/link';
 
-const Login: NextPage = () => {
+const Login: NextPageWithLayout = () => {
   return (
     <>
       <h1>Login</h1>
@@ -16,5 +18,11 @@ const Login: NextPage = () => {
     </>
   );
 };
+
+Login.getLayout = (page: ReactNode) => {
+  return (
+    <StartLayout>{page}</StartLayout>
+  )
+}
 
 export default Login;
