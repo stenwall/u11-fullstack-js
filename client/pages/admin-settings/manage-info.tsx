@@ -1,7 +1,9 @@
-import type { NextPage } from 'next';
+import type { NextPageWithLayout } from 'next';
 import Link from 'next/link';
+import type { ReactNode } from 'react'
+import MainLayout from '../../components/layout/MainLayout';
 
-const ManageInfo: NextPage = () => {
+const ManageInfo: NextPageWithLayout = () => {
   return (
     <>
       <h1>ManageInfo</h1>
@@ -22,5 +24,11 @@ const ManageInfo: NextPage = () => {
     </>
   );
 };
+
+ManageInfo.getLayout = (page: ReactNode) => {
+  return (
+    <MainLayout>{page}</MainLayout>
+  )
+}
 
 export default ManageInfo;

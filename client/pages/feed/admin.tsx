@@ -1,7 +1,10 @@
-import type { NextPage } from 'next';
+import type { NextPageWithLayout } from 'next';
+import type { ReactNode } from 'react'
+import { useRouter } from 'next/router';
 import Link from 'next/link';
+import MainLayout from '../../components/layout/MainLayout';
 
-const AdminFeed: NextPage = () => {
+const AdminFeed: NextPageWithLayout = () => {
   return (
     <>
       <h1>AdminFeed</h1>
@@ -53,5 +56,11 @@ const AdminFeed: NextPage = () => {
     </>
   );
 };
+
+AdminFeed.getLayout = (page: ReactNode) => {
+  return (
+    <MainLayout>{page}</MainLayout>
+  )
+}
 
 export default AdminFeed;

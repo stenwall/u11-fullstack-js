@@ -1,7 +1,9 @@
-import type { NextPage } from 'next';
+import type { NextPageWithLayout } from 'next';
 import Link from 'next/link';
+import type { ReactNode } from 'react'
+import MainLayout from '../../components/layout/MainLayout';
 
-const AdminSettings: NextPage = () => {
+const AdminSettings: NextPageWithLayout = () => {
   return (
     <>
       <h1>AdminSettings</h1>
@@ -16,5 +18,11 @@ const AdminSettings: NextPage = () => {
     </>
   );
 };
+
+AdminSettings.getLayout = (page: ReactNode) => {
+  return (
+    <MainLayout>{page}</MainLayout>
+  )
+}
 
 export default AdminSettings;
