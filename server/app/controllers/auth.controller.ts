@@ -21,13 +21,13 @@ export const register = async (req: Request, res: Response) => {
     email: req.body.email,
     password: bcrypt.hashSync(req.body.password, 8),
     status: req.body.status ? req.body.status : true,
-    role: req.body.role ? req.body.role : 'user',
+    role: req.body.role ? req.body.role : 'user'
   });
   try {
     // temporarily save all users to the only available house, created on init
     const house = await House.findOne({
       name: 'Höstvetet'
-    })
+    });
     if (!house) {
       return res.status(404).send({
         message: `No house to save user to found.`
@@ -94,23 +94,27 @@ export const login = async (req: Request, res: Response) => {
             id: user.id,
             role: user.role
           },
-          config.PRIVATE_KEY,
-          {
-            expiresIn: '30m'
-          }
+          config.PRIVATE_KEY
+          // {
+          //   expiresIn: '30m'
+          // }
         );
-        return res.status(200).send({
-          user: {
-            id: user._id,
-            username: user.username,
-            firstname: user.firstname,
-            lastname: user.lastname,
-            email: user.email,
-            role: user.role,
-            house: user.house_id
-          },
-          accessToken: token
-        });
+        return res
+          .cookie('access_token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production'
+          })
+          .status(200)
+          .send({
+            user: {
+              id: user._id,
+              firstname: user.firstname,
+              lastname: user.lastname,
+              role: user.role,
+              house: user.house_id
+            },
+            accessToken: token
+          });
       }
     }
   } catch (err: any) {
@@ -123,7 +127,8 @@ export const login = async (req: Request, res: Response) => {
 
 // logout user
 export const logout = async (req: Request, res: Response) => {
-  // const { token } = req.body;
-  // refreshTokens = refreshTokens.filter(token => token !== token);
-  res.send('Not able to logout yet...');
+  return res
+    .clearCookie('access_token')
+    .status(200)
+    .send({ message: 'Successfully logged out' });
 };
