@@ -3,26 +3,17 @@ import { getPosts } from 'services/post.service';
 import Link from 'next/link';
 import MainLayout from '../../components/layout/MainLayout';
 import type { NextPageWithLayout } from 'next';
-import {
-  Avatar,
-  Fab,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-} from '@mui/material';
+import { Fab, List } from '@mui/material';
 import { Edit } from '@mui/icons-material';
 import { ReactNode } from 'react';
-import { colorByString } from 'helpers/color-by-string';
-
-interface Props {}
+import FeedView from 'components/FeedView';
 
 const fetcher = async () => {
   const data = await getPosts();
   return data;
 };
 
-const Feed: NextPageWithLayout = (props: Props) => {
+const Feed: NextPageWithLayout = () => {
   const { data, error } = useSWR('posts', fetcher);
 
   if (error) return 'An error has occured.';
@@ -32,22 +23,14 @@ const Feed: NextPageWithLayout = (props: Props) => {
     <div className="feed-wrapper">
       <List>
         {data.map(({ _id, body, user_id }: any) => (
-          <ListItem button key={_id} divider alignItems="flex-start">
-            <ListItemAvatar>
-              <Avatar
-                alt="Profile Picture"
-                sx={{
-                  bgcolor: colorByString(user_id.firstname + user_id.lastname),
-                }}
-              >
-                {user_id.firstname[0] + user_id.lastname[0]}
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText
-              primary={`${user_id.firstname} ${user_id.lastname}`}
-              secondary={body}
-            />
-          </ListItem>
+          <FeedView
+            key={_id}
+            colorString={user_id.firstname + user_id.lastname}
+            initials={user_id.firstname[0] + user_id.lastname[0]}
+            firstname={user_id.firstname}
+            lastname={user_id.lastname}
+            post={body}
+          />
         ))}
       </List>
       <Fab color="secondary" aria-label="edit">
