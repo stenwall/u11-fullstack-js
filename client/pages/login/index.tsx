@@ -29,17 +29,13 @@ const Login: NextPageWithLayout = () => {
   const handleLogin = (data: any) => {
     setLoading(true);
     login(data)
-      .then((response) => {
+      .then((res) => {
         router.push('/feed');
       })
       .catch((error) => {
         setLoading(false);
-        const errorMsg =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
+        const errorMsg = error.res.data.message ||
+          error.message || error.toString();
         setMessage(errorMsg);
         setOpen(true);
       });
@@ -88,7 +84,12 @@ const Login: NextPageWithLayout = () => {
             error={formik.touched.password && Boolean(formik.errors.password)}
             helperText={formik.touched.password && formik.errors.password}
           />
-          <LoadingButton variant="contained" type="submit" disableElevation loading={loading}>
+          <LoadingButton
+            variant="contained"
+            type="submit"
+            disableElevation
+            loading={loading}
+          >
             Login
           </LoadingButton>
           <Typography variant="subtitle1" component="span" gutterBottom>
@@ -104,7 +105,9 @@ const Login: NextPageWithLayout = () => {
         autoHideDuration={4000}
         onClose={handleClose}
       >
-        <Alert onClose={handleClose} severity="error">{message}</Alert>
+        <Alert onClose={handleClose} severity="error">
+          {message}
+        </Alert>
       </Snackbar>
     </>
   );

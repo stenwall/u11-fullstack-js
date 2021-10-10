@@ -2,7 +2,7 @@ import type { NextPageWithLayout } from 'next';
 import { ReactNode, SyntheticEvent, useState } from 'react';
 import StartLayout from '../../components/layout/StartLayout';
 import Link from 'next/link';
-import { Alert, Box, Button, Snackbar, TextField, Typography } from '@mui/material';
+import { Alert, Box, Snackbar, TextField, Typography } from '@mui/material';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { register } from 'services/auth.service';
@@ -55,19 +55,13 @@ const Register: NextPageWithLayout = () => {
   const handleRegister = (data: any) => {
     setLoading(true);
     register(data)
-      .then((response) => {
-        const resMsg = response.message;
-        console.log(resMsg);
+      .then((res) => {
         router.push('/login');
       })
       .catch((error) => {
         setLoading(false);
-        const errorMsg =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
+        const errorMsg = error.res.data.message ||
+          error.message || error.toString();
         setMessage(errorMsg);
         setOpen(true);
       });
@@ -100,7 +94,6 @@ const Register: NextPageWithLayout = () => {
         <Typography variant="h4" component="h2">
           Register
         </Typography>
-
         <Box component="form" onSubmit={formik.handleSubmit}>
           <TextField
             id="firstname"
@@ -178,7 +171,12 @@ const Register: NextPageWithLayout = () => {
             helperText={formik.touched.passwordConfirm && formik.errors.passwordConfirm}
             required
           />
-          <LoadingButton variant="contained" type="submit" disableElevation loading={loading}>
+          <LoadingButton
+            variant="contained"
+            type="submit"
+            disableElevation
+            loading={loading}
+          >
             Register
             </LoadingButton>
           <Typography variant="subtitle1" component="span" gutterBottom>
