@@ -11,12 +11,10 @@ const MainLayout = ({ children }: Props) => {
   const [value, setValue] = useState('');
 
   const handleChange = (event: SyntheticEvent, newValue: string) => {
-    console.log(newValue);
     setValue(newValue);
   };
 
   const handleClick = (event: BaseSyntheticEvent) => {
-    console.log(event.target.value)
     setValue(event.target.value);
   };
 
