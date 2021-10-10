@@ -32,8 +32,46 @@ let theme = createTheme({
     },
   },
   typography: {
-    fontFamily: 'Roboto',
-  }
+    fontFamily: [
+      '"Nunito"',
+      'Roboto',
+      'sans-serif',
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(','),
+    h1: {
+      fontFamily: '"Merriweather", serif',
+      fontWeight: 700,
+      fontStyle: 'italic',
+      fontSize: '3.75rem',
+      lineHeight: 1.12,
+      letterSpacing: '-0.01562em',
+    },
+    h2: {
+      fontFamily: '"Merriweather", serif',
+      fontWeight: 700,
+    },
+    h4: {
+      fontFamily: '"Merriweather", serif',
+      fontWeight: 700,
+      fontStyle: 'italic',
+    },
+    body1: {
+      fontWeight: 600,
+      letterSpacing: '0.01em',
+    },
+    body2: {
+      fontWeight: 300,
+      fontSize: '1rem',
+      lineHeight: 1.5,
+      letterSpacing: '0.01em',
+    },
+    button: {
+      fontWeight: 700,
+      letterSpacing: '0.03em',
+    },
+  },
 });
 
 export default theme;
