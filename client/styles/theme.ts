@@ -57,8 +57,23 @@ let theme = createTheme({
       fontWeight: 700,
       fontStyle: 'italic',
     },
+    h5: {
+      fontWeight: 700,
+      fontSize: '1.5rem',
+      lineHeight: 1.35,
+      letterSpacing: '0.03em',
+    },
+    subtitle2: {
+      fontFamily: '"Merriweather", serif',
+      fontWeight: 200,
+      fontSize: '0.875rem',
+      fontStyle: 'italic',
+      lineHeight: 1.57,
+      letterSpacing: '0.00714em',
+    },
     body1: {
       fontWeight: 600,
+      fontSize: '1.1rem',
       letterSpacing: '0.01em',
     },
     body2: {
@@ -69,6 +84,7 @@ let theme = createTheme({
     },
     button: {
       fontWeight: 700,
+      fontSize: "1rem",
       letterSpacing: '0.03em',
     },
   },
