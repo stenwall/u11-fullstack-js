@@ -51,6 +51,7 @@ let theme = createTheme({
     h2: {
       fontFamily: '"Merriweather", serif',
       fontWeight: 700,
+      fontStyle: 'italic',
     },
     h4: {
       fontFamily: '"Merriweather", serif',
