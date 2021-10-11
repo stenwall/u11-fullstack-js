@@ -10,4 +10,6 @@ export default interface House {
   streetnumber: number;
   zipcode: number;
   city: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
