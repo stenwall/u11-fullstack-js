@@ -5,6 +5,10 @@ import Head from 'next/head';
 import { CssBaseline } from '@mui/material';
 import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
 import theme from '../styles/theme';
+import http from 'helpers/http-common';
+import { SWRConfig } from 'swr';
+
+const fetcher = (url: string) => http.get(url).then((res) => res.data);
 
 const MyApp = ({ Component, pageProps }: AppLayoutProps) => {
   const getLayout = Component.getLayout || ((page: ReactNode) => page);
@@ -38,12 +42,18 @@ const MyApp = ({ Component, pageProps }: AppLayoutProps) => {
           rel="stylesheet"
         />
       </Head>
-      <StyledEngineProvider injectFirst>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          {getLayout(<Component {...pageProps} />)}
-        </ThemeProvider>
-      </StyledEngineProvider>
+      <SWRConfig value={{
+        // refreshInterval: 3000,
+        shouldRetryOnError: true,
+        fetcher
+      }}>
+        <StyledEngineProvider injectFirst>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            {getLayout(<Component {...pageProps} />)}
+          </ThemeProvider>
+        </StyledEngineProvider>
+      </SWRConfig>
     </>
   );
 };

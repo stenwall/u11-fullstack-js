@@ -1,34 +1,24 @@
 import http from 'helpers/http-common';
 import qs from 'qs';
+import User from 'types/user.type';
 
-export const login = (data: any) => {
+export const login = (data: User) => {
   return http.post('/auth/login', qs.stringify(data))
   .then((res: any) => {
-    if (res.data.user) {
-      localStorage.setItem('user', JSON.stringify(res.data.user));
-    }
     return res;
   });
 };
 
 export const logout = () => {
-  localStorage.removeItem('user');
   return http.post('/auth/logout')
   .then((res: any) => {
     return res;
   });
 };
 
-export const register = async (data: any) => {
+export const register = async (data: User) => {
   return http.post('/auth/register', qs.stringify(data))
   .then((res: any) => {
     return res;
   });
-};
-
-export const getCurrentUser = () => {
-  const userStr = localStorage.getItem('user');
-  if (userStr) return JSON.parse(userStr);
-
-  return null;
 };

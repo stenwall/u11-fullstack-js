@@ -1,5 +1,4 @@
 import useSWR from 'swr';
-import { getPosts } from 'services/post.service';
 import Link from 'next/link';
 import MainLayout from '../../components/layout/MainLayout';
 import type { NextPageWithLayout } from 'next';
@@ -8,27 +7,23 @@ import { Edit } from '@mui/icons-material';
 import { ReactNode } from 'react';
 import FeedView from 'components/FeedView';
 
-const fetcher = async () => {
-  const data = await getPosts();
-  return data;
-};
-
 const Feed: NextPageWithLayout = () => {
-  const { data, error } = useSWR('posts', fetcher);
+  const { data: posts, error } = useSWR('/posts');
 
   if (error) return 'An error has occured.';
-  if (!data) return 'Loading.';
+  if (!posts) return 'Loading.';
 
   return (
     <div className="feed-wrapper">
       <List>
-        {data.map(({ _id, body, user_id }: any) => (
+        {posts && posts.map(({ _id, body, user_id, createdAt }: any) => (
           <FeedView
             key={_id}
             colorString={user_id.firstname + user_id.lastname}
             initials={user_id.firstname[0] + user_id.lastname[0]}
             firstname={user_id.firstname}
             lastname={user_id.lastname}
+            createdAt={createdAt}
             post={body}
           />
         ))}
