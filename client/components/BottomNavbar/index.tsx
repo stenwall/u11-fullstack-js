@@ -8,6 +8,29 @@ interface Props {
   onChange: any;
 }
 
+const btnLinks = {
+  home: (
+    <Link href="/feed">
+      <Home />
+    </Link>
+  ),
+  groupes: (
+    <Link href="/groupes">
+      <Groups />
+    </Link>
+  ),
+  friends: (
+    <Link href="/friends">
+      <Favorite />
+    </Link>
+  ),
+  favorites: (
+    <Link href="/favorites">
+      <Bookmark />
+    </Link>
+  )
+};
+
 const BottomNavbar = (props: Props) => {
   return (
     <BottomNavigation
@@ -15,9 +38,10 @@ const BottomNavbar = (props: Props) => {
       value={props.value}
       onChange={props.onChange}
     >
-      <Link href="/feed">
-        <BottomNavigationAction value="home" icon={<Home />} />
-      </Link>
+      <BottomNavigationAction
+        value="home"
+        icon={btnLinks.home}
+      />
       <Link href="/groupes">
         <BottomNavigationAction value="groupes" icon={<Groups />} />
       </Link>

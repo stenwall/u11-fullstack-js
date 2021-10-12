@@ -1,0 +1,9 @@
+@import '../../styles/variables/colors';
+
+.date {
+  display: inline;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding-left: 0.5rem;
+  color: $primary-light;
+}

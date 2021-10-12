@@ -1,0 +1,43 @@
+@import '../variables/colors';
+
+.form-wrapper {
+  padding: 0 1.5rem;
+  margin: 0 auto;
+  max-width: 550px;
+
+  h2 {
+    margin-left: 0.3rem;
+    margin-bottom: 2rem;
+  }
+
+  form.MuiBox-root {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: stretch;
+    min-width: 15rem;
+    max-width: 25rem;
+    margin: 0 auto;
+  
+    .MuiTextField-root,
+    .MuiButtonBase-root {
+      min-height: 56px;
+    }
+  
+    .MuiButtonBase-root {
+      font-size: 1.1rem;
+    }
+
+    span {
+      align-self: flex-start;
+
+      a {
+        color: $primary-main;
+        text-decoration: none;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
