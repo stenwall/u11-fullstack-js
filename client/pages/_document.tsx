@@ -6,21 +6,13 @@ import Document, {
   Main,
   NextScript,
 } from 'next/document';
-import theme from '../styles/theme';
 import { ServerStyleSheets } from '@mui/styles';
 
 class MyDocument extends Document {
   render() {
     return (
       <Html lang="en">
-        <Head>
-          <meta name="theme-color" content={theme.palette.primary.main} />
-          <link rel="icon" href="/favicon.ico" />
-          <link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-          />
-        </Head>
+        <Head />
         <body>
           <Main />
           <NextScript />
@@ -44,8 +36,11 @@ MyDocument.getInitialProps = async (ctx: DocumentContext) => {
   return {
     ...initialProps,
     // styles fragment is rendered after the app and page rendering finish.
-    styles: [...React.Children.toArray(initialProps.styles), sheets.getStyleElement()],
+    styles: [
+      ...React.Children.toArray(initialProps.styles),
+      sheets.getStyleElement(),
+    ],
   };
-}
+};
 
 export default MyDocument;

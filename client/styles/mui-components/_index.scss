@@ -1,0 +1,23 @@
+@import '../variables/colors';
+
+.index-wrapper {
+  padding: 0 1.5rem;
+  margin: 0 auto;
+  max-width: 550px;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+
+  h1 {
+    padding-bottom: 1rem;
+  }
+
+  .MuiCard-root {
+    box-shadow: none;
+    background-image: none;
+  }
+
+  .MuiButton-root {
+    min-height: 2.7rem;
+  }
+}

@@ -1,67 +1,44 @@
-import type { NextPageWithLayout } from 'next';
-import type { ReactNode } from 'react'
-import { useRouter } from 'next/router';
+import useSWR from 'swr';
 import Link from 'next/link';
 import MainLayout from '../../components/layout/MainLayout';
+import type { NextPageWithLayout } from 'next';
+import { Fab, List } from '@mui/material';
+import { Edit } from '@mui/icons-material';
+import { ReactNode } from 'react';
+import FeedView from 'components/FeedView';
 
 const Feed: NextPageWithLayout = () => {
-  const router = useRouter()
-  const { memberId } = router.query;
-  const placeholderList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
+  const { data: posts, error } = useSWR('/posts');
+
+  if (error) return 'An error has occured.';
+  if (!posts) return 'Loading.';
 
   return (
-    <>
-      <h1>Feed</h1>
-
-      <ul>
-        <li>
-          <Link href="/profile">
-            <a>Your profile</a>
-          </Link>
-        </li>
-        <li>
-          <Link href="/new-post">
-            <a>Write new post</a>
-          </Link>
-        </li>
-      </ul>
-
-      <h2>Posts</h2>
-      <ul>
-        <li>
-          <Link href="/members/[memberId]" as={'/members/1'}>
-            <a>A member's profile</a>
-          </Link>
-        </li>
-        <li>
-          <Link href="/members/[memberId]" as={'/members/2'}>
-            <a>Another member's profile</a>
-          </Link>
-        </li>
-      </ul>
-
-      <h2>Actions</h2>
-
-      <ul>
-        <li>
-          Remove your own posts
-        </li>
-      </ul>
-
-      <h2>Placeholder-list for scroll testing</h2>
-      <ul>
-        {placeholderList.map((item) => (
-          <li key={item}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</li>
+    <div className="feed-wrapper">
+      <List>
+        {posts && posts.map(({ _id, body, user_id, createdAt }: any) => (
+          <FeedView
+            key={_id}
+            colorString={user_id.firstname + user_id.lastname}
+            initials={user_id.firstname[0] + user_id.lastname[0]}
+            firstname={user_id.firstname}
+            lastname={user_id.lastname}
+            createdAt={createdAt}
+            post={body}
+          />
         ))}
-      </ul>
-    </>
+      </List>
+      <Fab color="secondary" aria-label="edit">
+        <Link href="/new-post">
+          <Edit />
+        </Link>
+      </Fab>
+    </div>
   );
 };
 
 Feed.getLayout = (page: ReactNode) => {
-  return (
-    <MainLayout>{page}</MainLayout>
-  )
-}
+  return <MainLayout>{page}</MainLayout>;
+};
 
 export default Feed;
