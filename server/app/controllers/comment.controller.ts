@@ -43,7 +43,10 @@ export const createComment = async (req: Request, res: Response) => {
 export const getPostWithComments = async (req: Request, res: Response) => {
   const id = req.params.postId;
   try {
-    const post = await Post.findById(id).populate('comments', '-__v');
+    const post = await Post.findById(id).populate({
+      path: 'comments',
+      select: 'firstname + lastname + createdAt'
+    });
     if (!post) {
       return res.status(404).send({ message: `Post with id ${id} not found.` });
     } else {

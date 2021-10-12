@@ -10,7 +10,9 @@ export const getHouse = async (req: Request, res: Response) => {
   try {
     const house = await House.findById(id);
     if (!house) {
-      return res.status(404).send({ message: `House with id: ${id} not found.` });
+      return res
+        .status(404)
+        .send({ message: `House with id: ${id} not found.` });
     } else {
       return res.status(200).send(house);
     }
@@ -26,9 +28,19 @@ export const getHouse = async (req: Request, res: Response) => {
 export const getHouseMembers = async (req: Request, res: Response) => {
   const id = req.params.id;
   try {
-    const house = await House.findById(id).populate('members', '-__v');
+    const house = await House.findById(id)
+      .populate({
+        path: 'admins',
+        select: 'firstname + lastname + createdAt'
+      })
+      .populate({
+        path: 'members',
+        select: 'firstname + lastname + createdAt'
+      });
     if (!house) {
-      return res.status(404).send({ message: `House with id: ${id} not found.` });
+      return res
+        .status(404)
+        .send({ message: `House with id: ${id} not found.` });
     } else {
       return res.status(200).send(house);
     }

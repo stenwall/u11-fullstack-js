@@ -3,15 +3,19 @@ import { Request, Response } from 'express';
 import models from '../models';
 
 const Post = models.Post;
+const House = models.House;
+const User = models.User;
 
 // create and save new post
 export const createPost = async (req: any, res: Response) => {
   if (!req.body) {
     return res.status(400).send({ message: 'Cannot be empty.' });
   }
+  const user = await User.findById(req.userId);
   const post = new Post({
     body: req.body.body,
-    user_id: req.userId
+    user_id: user?._id,
+    house_id: user?.house_id
   });
   try {
     const savedPost = await post.save();
@@ -26,6 +30,24 @@ export const createPost = async (req: any, res: Response) => {
     });
   }
 };
+
+// get all posts with users
+export const getPostsWithUsers = async (req: Request, res: Response) => {
+  try {
+    const user = await User.findById(req.userId);
+    const posts = await Post.find({ house_id: user?.house_id }).populate({ path: 'user_id', select: 'firstname + lastname', }).sort({ createdAt: -1 });
+    if (!posts) {
+      return res.status(404).send({ message: 'No posts in this house yet.' });
+    } else {
+      return res.status(200).send(posts);
+    }
+  } catch (err: any) {
+    return res.status(500).send({
+      message: 'Error retrieving posts from database.',
+      error: err.message
+    });
+  }
+}
 
 // get post by id
 export const getPost = async (req: Request, res: Response) => {

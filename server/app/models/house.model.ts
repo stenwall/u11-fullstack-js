@@ -10,9 +10,11 @@ export interface HouseDocument extends Document {
   streetnumber: number;
   zipcode: number;
   city: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-const schema = new Schema<HouseDocument>(
+const HouseSchema = new Schema<HouseDocument>(
   {
     name: {
       type: String,
@@ -55,6 +57,13 @@ const schema = new Schema<HouseDocument>(
   }
 );
 
-const House = model<HouseDocument>('House', schema);
+// virtuals
+HouseSchema.virtual('posts', {
+  ref: 'Post',
+  foreignField: 'house_id',
+  localField: '_id'
+});
+
+const House = model<HouseDocument>('House', HouseSchema);
 
 export default House;
