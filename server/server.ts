@@ -18,9 +18,6 @@ const corsOptions: object = {
 };
 
 const options: object = {
-  // dbName: process.env.DB_NAME as string,
-  // user: process.env.DB_USER as string,
-  // pass: process.env.DB_PASS as string,
   useNewUrlParser: true,
   useUnifiedTopology: true
 };
@@ -29,6 +26,7 @@ app.use(cookieParser());
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 mongoose
   .connect(config.DB_URI, options)
