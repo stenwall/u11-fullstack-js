@@ -3,7 +3,7 @@ import { UserDocument, CommentDocument, HouseDocument } from './';
 
 export interface PostDocument extends Document {
   body: string;
-  user_id: UserDocument['_id'];
+  user: UserDocument['_id'];
   house_id: HouseDocument['_id'];
   comments: Types.Array<CommentDocument['_id']>;
   createdAt: Date;
@@ -14,9 +14,10 @@ const PostSchema = new Schema<PostDocument>(
   {
     body: {
       type: String,
+      text: true,
       required: true
     },
-    user_id: {
+    user: {
       type: Schema.Types.ObjectId,
       ref: 'User'
     },
@@ -35,6 +36,8 @@ const PostSchema = new Schema<PostDocument>(
     timestamps: true
   }
 );
+
+PostSchema.index({ body: 'text' });
 
 const Post = model<PostDocument>('Post', PostSchema);
 

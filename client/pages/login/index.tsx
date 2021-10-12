@@ -34,7 +34,7 @@ const Login: NextPageWithLayout = () => {
       })
       .catch((error) => {
         setLoading(false);
-        const errorMsg = error.res.data.message ||
+        const errorMsg = error.res.message ||
           error.message || error.toString();
         setMessage(errorMsg);
         setOpen(true);

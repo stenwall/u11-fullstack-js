@@ -1,8 +1,9 @@
 import { useRouter } from 'next/router';
 import { AppBar, Toolbar, IconButton, Button } from '@mui/material';
-import { AccountCircle, Search } from '@mui/icons-material';
+import { AccountCircle, HomeWork, Search } from '@mui/icons-material';
 import Link from 'next/link';
 import { useUser } from 'hookes/useUser';
+import SearchBar from 'components/search-bar';
 
 interface Props {
   onClick: any;
@@ -17,32 +18,24 @@ const TopNavbar = (props: Props) => {
     <>
       <AppBar position="fixed" onClick={props.onClick}>
         <Toolbar>
-          <Link href="/info">
-            <Button value="info" sx={{ flexGrow: 1 }} size="large">
-              {currentUser && (
-                <Link
-                  href="/info/[houseId]"
-                  as={`/info/${currentUser.house_id}`}
-                >
-                  <h1>{currentUser.house}</h1>
-                </Link>
-              )}
-            </Button>
-          </Link>
-          <IconButton
-            value="search"
-            size="large"
-            color="inherit"
-            aria-label="search"
-          >
-            <Search />
-          </IconButton>
+          <SearchBar />
           {currentUser && (
-            <Link href="/profile/[userId]" as={`/profile/${currentUser.id}`}>
-              <IconButton value="profile" size="large" aria-label="profile">
-                <AccountCircle />
-              </IconButton>
-            </Link>
+            <div>
+              <Link href="/info/[houseId]" as={`/info/${currentUser.house_id}`}>
+                <IconButton
+                  value="house-info"
+                  size="large"
+                  aria-label="house-info"
+                >
+                  <HomeWork />
+                </IconButton>
+              </Link>
+              <Link href="/profile/[userId]" as={`/profile/${currentUser.id}`}>
+                <IconButton value="profile" size="large" aria-label="profile">
+                  <AccountCircle />
+                </IconButton>
+              </Link>
+            </div>
           )}
         </Toolbar>
       </AppBar>

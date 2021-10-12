@@ -69,7 +69,7 @@ const UserSchema = new Schema<UserDocument>(
 // virtuals
 UserSchema.virtual('posts', {
   ref: 'Post',
-  foreignField: 'user_id',
+  foreignField: 'user',
   localField: '_id'
 });
 

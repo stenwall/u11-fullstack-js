@@ -3,6 +3,7 @@ import userRoutes from './user.routes';
 import postRoutes from './post.routes';
 import houseRoutes from './house.routes';
 import adminRoutes from './admin.routes';
+import searchRoutes from './search.routes';
 import { Application, Request, Response, NextFunction } from 'express';
 
 const routes = (app: Application) => {
@@ -20,6 +21,7 @@ const routes = (app: Application) => {
   app.use('/api/posts', postRoutes);
   app.use('/api/house', houseRoutes);
   app.use('/api/admin/', adminRoutes);
+  app.use('/api/search/', searchRoutes);
 }
 
 export default routes;

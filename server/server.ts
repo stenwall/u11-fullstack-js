@@ -14,7 +14,7 @@ mongoose.Promise = global.Promise;
 
 const corsOptions: object = {
   origin: config.CLIENT_URL,
-  credentials: true
+  withCredentials: true
 };
 
 const options: object = {
