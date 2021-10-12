@@ -1,0 +1,41 @@
+@import '../variables/colors';
+
+.profile-wrapper {
+  padding: 1.5rem;
+  margin: 0 auto;
+  max-width: 550px;
+  display: flex;
+  flex-direction: column;
+  gap:2rem;
+
+  .MuiAvatar-root {
+    width: 6rem;
+    height: 6rem;
+  }
+
+  .MuiButton-root {
+    min-height: 2.7rem;
+  }
+
+  .MuiList-root {
+    padding: 0;
+  }
+
+  .MuiPaper-root {
+    padding: 1rem;
+    display: flex;
+    gap: 2rem;
+
+    &.user-posts {
+      display: block;
+      padding: 0;
+    }
+
+    .MuiListItemAvatar-root {
+      .MuiAvatar-root {
+        width: 3rem;
+        height: 3rem;
+      }
+    }
+  }
+}
