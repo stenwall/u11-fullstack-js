@@ -3,6 +3,11 @@
 .MuiAppBar-root {
   box-shadow: none;
   background-image: none;
+  z-index: 1400;
+
+  .MuiToolbar-root {
+    justify-content: space-between;
+  }
 
   .MuiButton-root {
     text-transform: none;

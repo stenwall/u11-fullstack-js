@@ -14,7 +14,7 @@ export const createPost = async (req: any, res: Response) => {
   const user = await User.findById(req.userId);
   const post = new Post({
     body: req.body.body,
-    user_id: user?._id,
+    user: user?._id,
     house_id: user?.house_id
   });
   try {
@@ -35,7 +35,7 @@ export const createPost = async (req: any, res: Response) => {
 export const getPostsWithUsers = async (req: Request, res: Response) => {
   try {
     const user = await User.findById(req.userId);
-    const posts = await Post.find({ house_id: user?.house_id }).populate({ path: 'user_id', select: 'firstname + lastname', }).sort({ createdAt: -1 });
+    const posts = await Post.find({ house_id: user?.house_id }).populate({ path: 'user', select: 'firstname + lastname', }).sort({ createdAt: -1 });
     if (!posts) {
       return res.status(404).send({ message: 'No posts in this house yet.' });
     } else {
@@ -108,7 +108,7 @@ export const deletePost = async (req: Request, res: Response) => {
         message: `Cannot delete post with id: ${id}, maybe it was not found.`
       });
     }
-    if (post && post.user_id !== req.userId) {
+    if (post && post !== req.userId) {
       return res.status(404).send({
         message: `Post with id: ${id} do not belong to you and cannot be deleted.`
       });

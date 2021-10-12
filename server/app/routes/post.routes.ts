@@ -1,4 +1,4 @@
-// routes for posts and comments
+// routes for posts
 import { Router } from 'express';
 import * as controller from '../controllers/post.controller';
 import middlewares from '../middlewares';

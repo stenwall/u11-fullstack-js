@@ -65,13 +65,13 @@ const UserProfile: NextPageWithLayout = () => {
         <List>
           <Divider />
           {posts &&
-            posts.map(({ _id, body, user_id, createdAt }: any) => (
+            posts.map(({ _id, body, user, createdAt }: any) => (
               <FeedView
                 key={_id}
-                colorString={user_id.firstname + user_id.lastname}
-                initials={user_id.firstname[0] + user_id.lastname[0]}
-                firstname={user_id.firstname}
-                lastname={user_id.lastname}
+                colorString={user.firstname + user.lastname}
+                initials={user.firstname[0] + user.lastname[0]}
+                firstname={user.firstname}
+                lastname={user.lastname}
                 createdAt={createdAt}
                 post={body}
               />
