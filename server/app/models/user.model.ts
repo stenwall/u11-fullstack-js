@@ -12,7 +12,7 @@ export interface UserDocument extends Document {
   friends?: Types.Array<string>;
   groups?: Types.Array<string>;
   role: string;
-  house_id: HouseDocument['id'];
+  house_id: HouseDocument['_id'];
   createdAt: Date;
   updatedAt: Date;
 }

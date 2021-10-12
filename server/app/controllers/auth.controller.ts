@@ -11,7 +11,7 @@ const House = models.House;
 // create and save new user
 export const register = async (req: Request, res: Response) => {
   if (!req.body) {
-    res.status(400).send({ message: 'Cannot be empty.' });
+    return res.status(400).send({ message: 'Cannot be empty.' });
   }
   const user = new User({
     username: req.body.username,
@@ -21,15 +21,15 @@ export const register = async (req: Request, res: Response) => {
     email: req.body.email,
     password: bcrypt.hashSync(req.body.password, 8),
     status: req.body.status ? req.body.status : true,
-    role: req.body.role ? req.body.role : 'user',
+    role: req.body.role ? req.body.role : 'user'
   });
   try {
     // temporarily save all users to the only available house, created on init
     const house = await House.findOne({
       name: 'Höstvetet'
-    })
+    });
     if (!house) {
-      res.status(404).send({
+      return res.status(404).send({
         message: `No house to save user to found.`
       });
     } else {
@@ -47,7 +47,7 @@ export const register = async (req: Request, res: Response) => {
           { new: true, useFindAndModify: false }
         );
       }
-      res.status(201).send({
+      return res.status(201).send({
         message: 'User successfully registered.',
         user: {
           id: savedUser._id,
@@ -61,7 +61,7 @@ export const register = async (req: Request, res: Response) => {
       });
     }
   } catch (err: any) {
-    res.status(500).send({
+    return res.status(500).send({
       message: 'Error saving user to database.',
       error: err.message
     });
@@ -96,25 +96,20 @@ export const login = async (req: Request, res: Response) => {
           },
           config.PRIVATE_KEY,
           {
-            expiresIn: '30m'
+            expiresIn: 86400
           }
         );
-        res.status(200).send({
-          user: {
-            id: user._id,
-            username: user.username,
-            firstname: user.firstname,
-            lastname: user.lastname,
-            email: user.email,
-            role: user.role,
-            house: user.house_id
-          },
-          accessToken: token
-        });
+        return res
+          .cookie('access_token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production'
+          })
+          .status(200)
+          .send({ message: 'Successfully logged in.' });
       }
     }
   } catch (err: any) {
-    res.status(500).send({
+    return res.status(500).send({
       message: 'Error retrieving user from database.',
       error: err.message
     });
@@ -123,7 +118,37 @@ export const login = async (req: Request, res: Response) => {
 
 // logout user
 export const logout = async (req: Request, res: Response) => {
-  // const { token } = req.body;
-  // refreshTokens = refreshTokens.filter(token => token !== token);
-  res.send('Not able to logout yet...');
+  return res
+    .clearCookie('access_token')
+    .status(200)
+    .send({ message: 'Successfully logged out' });
+};
+
+// get logged in user
+export const getCurrentUser = async (req: Request, res: Response) => {
+  const id = req.userId;
+  try {
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).send({ message: 'No user is logged in' });
+    } else {
+      const house = await House.findById(user.house_id);
+      return res.status(200).send({
+        id: user._id,
+        username: user.username,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        email: user.email,
+        role: user.role,
+        house: house?.name,
+        house_id: house?._id,
+        createdAt: user.createdAt
+      });
+    }
+  } catch (err: any) {
+    return res.status(500).send({
+      message: 'Error retrieving user from database.',
+      error: err.message
+    });
+  }
 };

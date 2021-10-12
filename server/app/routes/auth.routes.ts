@@ -10,10 +10,7 @@ const router = Router();
 // register new user
 router.post(
   '/register',
-  [
-    verifyRegister.checkDuplicates,
-    verifyRegister.checkRoleExist
-  ],
+  [verifyRegister.checkDuplicates, verifyRegister.checkRoleExist],
   controller.register
 );
 
@@ -21,6 +18,9 @@ router.post(
 router.post('/login', controller.login);
 
 // logout user
-router.post('/logout', [verifyToken], controller.logout)
+router.post('/logout', [verifyToken], controller.logout);
+
+// get logged in user
+router.get('/user', [verifyToken], controller.getCurrentUser);
 
 export default router;
