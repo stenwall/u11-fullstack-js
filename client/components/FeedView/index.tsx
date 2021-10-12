@@ -21,7 +21,7 @@ interface Props {
 const FeedView = (props: Props) => {
   return (
     <>
-      <ListItem button divider alignItems="flex-start">
+      <ListItem button alignItems="flex-start">
         <ListItemAvatar>
           <Avatar sx={{ bgcolor: colorByString(props.colorString) }}>
             {props.initials}
