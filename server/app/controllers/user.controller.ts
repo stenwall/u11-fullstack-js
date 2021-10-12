@@ -7,22 +7,23 @@ const Post = models.Post;
 
 // get user by id
 export const getUser = async (req: Request, res: Response) => {
-  const id = req.params.id;
+  const id = req.params.userId;
   try {
     const user = await User.findById(id);
     if (!user) {
       return res.status(404).send({ message: `User with id: ${id} not found.` });
     } else {
-      return res.status(200).send({user: {
+      return res.status(200).send({
         id: user._id,
         username: user.username,
         firstname: user.firstname,
         lastname: user.lastname,
         email: user.email,
         role: user.role,
-        house: user.house_id,
+        house_id: user.house_id,
+        status: user.status,
         createdAt: user.createdAt
-      },});
+      });
     }
   } catch (err: any) {
     return res.status(500).send({
@@ -39,7 +40,7 @@ export const updateUser = async (req: Request, res: Response) => {
       message: 'Data to update cannot be empty.'
     });
   }
-  const id = req.params.id;
+  const id = req.params.userId;
   try {
     const user = await User.findByIdAndUpdate(id, req.body, {
       useFindAndModify: false
@@ -68,11 +69,16 @@ export const updateUser = async (req: Request, res: Response) => {
 
 // get all posts by user id
 export const getPostsByUser = async (req: Request, res: Response) => {
+  const id = req.params.userId;
   try {
-    const posts = await Post.find({ user_id: req.userId }).exec();
-    return res.status(201).send({
-      posts
-    });
+    const posts = await Post.find({ user_id: id }).populate({ path: 'user_id', select: 'firstname + lastname'});
+    if (!posts) {
+      return res.status(404).send({
+        message: 'This user has not written any posts yet.'
+      });
+    } else {
+      return res.status(201).send(posts);
+    }
   } catch (err: any) {
     return res.status(500).send({
       message: 'Error retrieving posts from database.',
