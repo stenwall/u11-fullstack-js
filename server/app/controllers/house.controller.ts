@@ -10,12 +10,14 @@ export const getHouse = async (req: Request, res: Response) => {
   try {
     const house = await House.findById(id);
     if (!house) {
-      res.status(404).send({ message: `House with id: ${id} not found.` });
+      return res
+        .status(404)
+        .send({ message: `House with id: ${id} not found.` });
     } else {
-      res.status(200).send(house);
+      return res.status(200).send(house);
     }
   } catch (err: any) {
-    res.status(500).send({
+    return res.status(500).send({
       message: `Error retrieving house with id: ${id}.`,
       error: err.message
     });
@@ -26,14 +28,24 @@ export const getHouse = async (req: Request, res: Response) => {
 export const getHouseMembers = async (req: Request, res: Response) => {
   const id = req.params.id;
   try {
-    const house = await House.findById(id).populate('members', '-__v');
+    const house = await House.findById(id)
+      .populate({
+        path: 'admins',
+        select: 'firstname + lastname + createdAt'
+      })
+      .populate({
+        path: 'members',
+        select: 'firstname + lastname + createdAt'
+      });
     if (!house) {
-      res.status(404).send({ message: `House with id: ${id} not found.` });
+      return res
+        .status(404)
+        .send({ message: `House with id: ${id} not found.` });
     } else {
-      res.status(200).send(house);
+      return res.status(200).send(house);
     }
   } catch (err: any) {
-    res.status(500).send({
+    return res.status(500).send({
       message: `Error retrieving house with id: ${id}.`,
       error: err.message
     });

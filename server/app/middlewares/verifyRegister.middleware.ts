@@ -14,14 +14,11 @@ const checkDuplicates = (
     username: req.body.username
   }).exec((err: any, user) => {
     if (err) {
-      res.status(500).send({ message: err });
-      return;
+      return res.status(500).send({ message: err });
     }
-
     if (user) {
       return res.status(400).send({ message: 'Failed: username is already in use.' });
     }
-
     // email
     User.findOne({
       email: req.body.email
@@ -29,12 +26,10 @@ const checkDuplicates = (
       if (err) {
         return res.status(500).send({ message: err });
       }
-
       if (user) {
         return res.status(400).send({ message: 'Failed: email is already in use.' });
       }
-
-      return next();
+      next();
     });
   });
 };
@@ -47,7 +42,7 @@ const checkRoleExist = (req: Request, res: Response, next: NextFunction) => {
       });
     }
   }
-  return next();
+  next();
 };
 
 const verifyRegister = {
