@@ -11,7 +11,7 @@ interface Props {
 const TopNavbar = (props: Props) => {
   const { data: currentUser, error: userError } = useUser();
 
-  if (!currentUser) return 'Loading.';
+  if (!currentUser) return <p>Loading...</p>;
 
   return (
     <>
