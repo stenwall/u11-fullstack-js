@@ -10,6 +10,9 @@ const router = Router();
 // create new post
 router.post('/', [verifyToken], controller.createPost);
 
+// get all posts with users
+router.get('/', [verifyToken], controller.getPostsWithUsers)
+
 // get post by id
 router.get('/:postId', [verifyToken], controller.getPost);
 

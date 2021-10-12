@@ -5,6 +5,7 @@ import express from 'express';
 import cors from 'cors';
 import models from './app/models';
 import routes from './app/routes';
+import cookieParser from 'cookie-parser';
 
 const app = express();
 const House = models.House;
@@ -12,20 +13,20 @@ const House = models.House;
 mongoose.Promise = global.Promise;
 
 const corsOptions: object = {
-  origin: config.CLIENT_URL
+  origin: config.CLIENT_URL,
+  credentials: true
 };
 
 const options: object = {
-  // dbName: process.env.DB_NAME as string,
-  // user: process.env.DB_USER as string,
-  // pass: process.env.DB_PASS as string,
   useNewUrlParser: true,
   useUnifiedTopology: true
 };
 
+app.use(cookieParser());
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 mongoose
   .connect(config.DB_URI, options)
