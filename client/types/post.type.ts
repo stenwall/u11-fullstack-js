@@ -4,6 +4,6 @@ import Comment from './comment.type';
 export default interface Post {
   _id?: any | null;
   body: string;
-  user_id?: User['_id'];
+  user?: User['_id'];
   comments?: Array<Comment['_id']>;
 }

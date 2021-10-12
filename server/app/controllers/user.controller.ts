@@ -71,7 +71,7 @@ export const updateUser = async (req: Request, res: Response) => {
 export const getPostsByUser = async (req: Request, res: Response) => {
   const id = req.params.userId;
   try {
-    const posts = await Post.find({ user_id: id }).populate({ path: 'user_id', select: 'firstname + lastname'});
+    const posts = await Post.find({ user: id }).populate({ path: 'user', select: 'firstname + lastname'});
     if (!posts) {
       return res.status(404).send({
         message: 'This user has not written any posts yet.'
