@@ -30,8 +30,6 @@ const SearchBar = () => {
                   <Divider />
                   <FeedView
                     key={_id}
-                    colorString={user.firstname + user.lastname}
-                    initials={user.firstname[0] + user.lastname[0]}
                     firstname={user.firstname}
                     lastname={user.lastname}
                     createdAt={createdAt}
