@@ -4,3 +4,5 @@ declare module 'react-redux';
 declare module 'styled-components';
 declare module 'styled-system';
 declare module 'flat';
+declare module 'express-session';
+declare module 'react-datepicker';
