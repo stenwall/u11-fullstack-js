@@ -5,23 +5,8 @@ import MainLayout from '../../components/layout/MainLayout';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import House from 'types/house.type';
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Avatar,
-  Divider,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  Paper,
-  Typography,
-} from '@mui/material';
-import { ExpandMore } from '@mui/icons-material';
+import { Paper, Typography } from '@mui/material';
 import User from 'types/user.type';
-import FeedView from 'components/FeedView';
-import { colorByString } from 'helpers/color-by-string';
 import ListUserView from 'components/user-list-view';
 import ListAccordion from 'components/user-accordion';
 
@@ -56,22 +41,32 @@ const Info: NextPageWithLayout = () => {
         </Paper>
         <ListAccordion id="admin-list" header="Admins">
           {house.admins.map(({ _id, firstname, lastname, createdAt }: User) => (
-            <ListUserView
-              key={_id}
-              firstname={firstname}
-              lastname={lastname}
-              createdAt={createdAt}
-            />)
-          )}
+            <>
+              <Link href="/profile/[userId]" as={`/profile/${_id}`}>
+                <ListUserView
+                  key={_id}
+                  firstname={firstname}
+                  lastname={lastname}
+                  createdAt={createdAt}
+                />
+              </Link>
+            </>
+          ))}
         </ListAccordion>
         <ListAccordion id="members-list" header="Members">
-          {house.members.map(({ _id, firstname, lastname, createdAt }: User) => (
-            <ListUserView
-              key={_id}
-              firstname={firstname}
-              lastname={lastname}
-              createdAt={createdAt}
-            />)
+          {house.members.map(
+            ({ _id, firstname, lastname, createdAt }: User) => (
+              <>
+                <Link href="/profile/[userId]" as={`/profile/${_id}`}>
+                  <ListUserView
+                    key={_id}
+                    firstname={firstname}
+                    lastname={lastname}
+                    createdAt={createdAt}
+                  />
+                </Link>
+              </>
+            )
           )}
         </ListAccordion>
       </div>

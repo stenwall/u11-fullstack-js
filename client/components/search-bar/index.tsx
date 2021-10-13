@@ -10,7 +10,7 @@ import { Search } from '@mui/icons-material';
 import { useFormik } from 'formik';
 import { ReactNode, useState } from 'react';
 import http from 'helpers/http-common';
-import FeedView from 'components/FeedView';
+import FeedView from 'components/feed-view';
 
 const SearchBar = () => {
   const [openDrawer, setOpenDrawer] = useState(false),

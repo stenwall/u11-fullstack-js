@@ -60,9 +60,8 @@ const Register: NextPageWithLayout = () => {
       })
       .catch((error) => {
         setLoading(false);
-        const errorMsg = error.res.data.message ||
-          error.message || error.toString();
-        setMessage(errorMsg);
+
+        setMessage(error.message);
         setOpen(true);
       });
   };
