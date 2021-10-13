@@ -5,7 +5,7 @@ import type { NextPageWithLayout } from 'next';
 import { Divider, Fab, List } from '@mui/material';
 import { Edit } from '@mui/icons-material';
 import { ReactNode } from 'react';
-import FeedView from 'components/FeedView';
+import FeedView from 'components/feed-view';
 
 const Feed: NextPageWithLayout = () => {
   const { data: posts, error } = useSWR('/posts');

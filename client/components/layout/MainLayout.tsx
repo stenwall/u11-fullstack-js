@@ -1,6 +1,6 @@
 import { BaseSyntheticEvent, ReactNode, SyntheticEvent, useState } from 'react';
-import BottomNavbar from '../BottomNavbar';
-import TopNavbar from '../TopNavbar';
+import BottomNavbar from '../bottom-navbar';
+import TopNavbar from '../top-navbar';
 import styles from './layout.module.scss';
 
 interface Props {

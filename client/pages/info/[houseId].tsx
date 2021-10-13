@@ -20,7 +20,7 @@ import {
 } from '@mui/material';
 import { ExpandMore } from '@mui/icons-material';
 import User from 'types/user.type';
-import FeedView from 'components/FeedView';
+import FeedView from 'components/feed-view';
 import { colorByString } from 'helpers/color-by-string';
 import ListUserView from 'components/user-list-view';
 import ListAccordion from 'components/user-accordion';

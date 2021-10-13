@@ -14,7 +14,7 @@ import {
 import { Settings } from '@mui/icons-material';
 import { colorByString } from 'helpers/color-by-string';
 import User from 'types/user.type';
-import FeedView from 'components/FeedView';
+import FeedView from 'components/feed-view';
 import { useRouter } from 'next/router';
 import { useUser } from 'hookes/useUser';
 import Post from 'types/post.type';
@@ -66,15 +66,18 @@ const UserProfile: NextPageWithLayout = () => {
           <Divider />
           {posts &&
             posts.map(({ _id, body, user, createdAt }: any) => (
-              <FeedView
-                key={_id}
-                colorString={user.firstname + user.lastname}
-                initials={user.firstname[0] + user.lastname[0]}
-                firstname={user.firstname}
-                lastname={user.lastname}
-                createdAt={createdAt}
-                post={body}
-              />
+              <>
+                <Divider />
+                <FeedView
+                  key={_id}
+                  colorString={user.firstname + user.lastname}
+                  initials={user.firstname[0] + user.lastname[0]}
+                  firstname={user.firstname}
+                  lastname={user.lastname}
+                  createdAt={createdAt}
+                  post={body}
+                />
+              </>
             ))}
         </List>
       </Paper>
