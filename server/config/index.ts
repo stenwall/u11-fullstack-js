@@ -3,5 +3,6 @@ export default {
   DB_URI: process.env.DB_URI as string,
   PORT: process.env.PORT as unknown as number,
   DB_NAME: process.env.DB_NAME as string,
-  PRIVATE_KEY: process.env.PRIVATE_KEY as string
+  PRIVATE_KEY: process.env.PRIVATE_KEY as string,
+  SUPER_COOKIE_PWD: process.env.SUPER_COOKIE_PWD as string
 }
