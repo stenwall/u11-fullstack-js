@@ -1,7 +1,7 @@
 import {
   Avatar,
-  ListItem,
   ListItemAvatar,
+  ListItemButton,
   ListItemText,
   Typography,
 } from '@mui/material';
@@ -10,8 +10,6 @@ import { format } from 'timeago.js';
 import styles from './feed-view.module.scss';
 
 interface Props {
-  colorString: string;
-  initials: string;
   firstname: string;
   lastname: string;
   post: string;
@@ -21,10 +19,10 @@ interface Props {
 const FeedView = (props: Props) => {
   return (
     <>
-      <ListItem button alignItems="flex-start">
+      <ListItemButton alignItems="flex-start">
         <ListItemAvatar>
-          <Avatar sx={{ bgcolor: colorByString(props.colorString) }}>
-            {props.initials}
+          <Avatar sx={{ bgcolor: colorByString(props.firstname + props.lastname) }}>
+            {props.firstname[0] + props.lastname[0]}
           </Avatar>
         </ListItemAvatar>
         <ListItemText
@@ -42,7 +40,7 @@ const FeedView = (props: Props) => {
           }
           secondary={props.post}
         />
-      </ListItem>
+      </ListItemButton>
     </>
   );
 };

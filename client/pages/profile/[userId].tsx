@@ -8,13 +8,14 @@ import {
   Button,
   Divider,
   List,
+  ListItem,
   Paper,
   Typography,
 } from '@mui/material';
 import { Settings } from '@mui/icons-material';
 import { colorByString } from 'helpers/color-by-string';
 import User from 'types/user.type';
-import FeedView from 'components/FeedView';
+import FeedView from 'components/feed-view';
 import { useRouter } from 'next/router';
 import { useUser } from 'hookes/useUser';
 import Post from 'types/post.type';
@@ -63,18 +64,21 @@ const UserProfile: NextPageWithLayout = () => {
       {user.desc && <Paper elevation={0}>{user.desc}</Paper>}
       <Paper elevation={0} className="user-posts">
         <List>
-          <Divider />
+          <ListItem>
+            <span>Posts by { currentUser?.firstname}</span>
+          </ListItem>
           {posts &&
             posts.map(({ _id, body, user, createdAt }: any) => (
-              <FeedView
-                key={_id}
-                colorString={user.firstname + user.lastname}
-                initials={user.firstname[0] + user.lastname[0]}
-                firstname={user.firstname}
-                lastname={user.lastname}
-                createdAt={createdAt}
-                post={body}
-              />
+              <>
+                <Divider />
+                <FeedView
+                  key={_id}
+                  firstname={user.firstname}
+                  lastname={user.lastname}
+                  createdAt={createdAt}
+                  post={body}
+                />
+              </>
             ))}
         </List>
       </Paper>
