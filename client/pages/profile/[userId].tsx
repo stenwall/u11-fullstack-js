@@ -8,6 +8,7 @@ import {
   Button,
   Divider,
   List,
+  ListItem,
   Paper,
   Typography,
 } from '@mui/material';
@@ -63,15 +64,15 @@ const UserProfile: NextPageWithLayout = () => {
       {user.desc && <Paper elevation={0}>{user.desc}</Paper>}
       <Paper elevation={0} className="user-posts">
         <List>
-          <Divider />
+          <ListItem>
+            <span>Posts by { currentUser?.firstname}</span>
+          </ListItem>
           {posts &&
             posts.map(({ _id, body, user, createdAt }: any) => (
               <>
                 <Divider />
                 <FeedView
                   key={_id}
-                  colorString={user.firstname + user.lastname}
-                  initials={user.firstname[0] + user.lastname[0]}
                   firstname={user.firstname}
                   lastname={user.lastname}
                   createdAt={createdAt}

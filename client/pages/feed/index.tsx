@@ -20,15 +20,13 @@ const Feed: NextPageWithLayout = () => {
           posts.map(({ _id, body, user, createdAt }: any) => (
             <>
               <Divider />
-              <FeedView
-                key={_id}
-                colorString={user.firstname + user.lastname}
-                initials={user.firstname[0] + user.lastname[0]}
-                firstname={user.firstname}
-                lastname={user.lastname}
-                createdAt={createdAt}
-                post={body}
-              />
+                <FeedView
+                  key={_id}
+                  firstname={user.firstname}
+                  lastname={user.lastname}
+                  createdAt={createdAt}
+                  post={body}
+                />
             </>
           ))}
       </List>
