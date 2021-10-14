@@ -99,10 +99,13 @@ export const login = async (req: Request, res: Response) => {
             expiresIn: 86400
           }
         );
+        const expiryOffset = 1*24*60*60*1000; // +1 day
         return res
           .cookie('access_token', token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production'
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : false,
+            expires: new Date(Date.now() + expiryOffset)
           })
           .status(200)
           .send({ message: 'Successfully logged in.' });
