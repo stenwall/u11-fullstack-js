@@ -23,7 +23,7 @@ AdminBro.registerAdapter(AdminBroMongoose);
 
 const corsOptions: object = {
   origin: config.CLIENT_URL,
-  withCredentials: true
+  credentials: true
 };
 
 const options: object = {
