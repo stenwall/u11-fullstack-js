@@ -16,9 +16,11 @@
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
+  <!--
   <a href="https://github.com/stenwall/u11-fullstack-js-stenwall">
     <img src="assets/logo.png" alt="Logo" width="80" height="80">
   </a>
+  -->
 
   <h3 align="center">My Neck of the Woods</h3>
 
@@ -138,7 +140,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 [stars-url]: https://github.com/chas-academy/u11-fullstack-js-stenwall/stargazers
 [issues-shield]: https://img.shields.io/github/issues/chas-academy/u11-fullstack-js-stenwall.svg?style=for-the-badge
 [issues-url]: https://github.com/chas-academy/u11-fullstack-js-stenwall/issues
-[license-shield]: https://img.shields.io/github/license/chas-academy/u11-fullstack-js-stenwall.svg?style=for-the-badge
+[license-shield]: https://img.shields.io/github/license/chas-academy/u11-fullstack-js-stenwall?label=license&style=for-the-badge
 [license-url]: https://github.com/chas-academy/u11-fullstack-js-stenwall/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/karin-stenwall
