@@ -102,21 +102,26 @@ Below are some of the design documents for the assignment.
 ### Wireframes
 
 <div style="display: inline">
-  <img src="assets/wireframes/start.png" alt="Feed" width="120">
-  <img src="assets/wireframes/login.png" alt="House info page 1" width="120">
-  <img src="assets/wireframes/register.png" alt="House info page 2" width="120">
-  <img src="assets/wireframes/feed.png" alt="Profile" width="120">
+  <img src="assets/wireframes/start.png" alt="Start page" width="120">
+  <img src="assets/wireframes/login.png" alt="Login" width="120">
+  <img src="assets/wireframes/register.png" alt="Register" width="120">
+  <img src="assets/wireframes/feed.png" alt="Feed" width="120">
 </div>
 <br/>
 <div style="display: inline">
-  <img src="assets/wireframes/new-post.png" alt="Search" width="120">
-  <img src="assets/wireframes/house-info.png" alt="Search" width="120">
-  <img src="assets/wireframes/members.png" alt="Search" width="120">
-  <img src="assets/wireframes/profile.png" alt="Search" width="120">
+  <img src="assets/wireframes/new-post.png" alt="New post" width="120">
+  <img src="assets/wireframes/house-info.png" alt="House info page" width="120">
+  <img src="assets/wireframes/members.png" alt="Members page" width="120">
+  <img src="assets/wireframes/profile.png" alt="Profile" width="120">
 </div>
 
 ### Sitemap
 
+I first did a sitemap covering the whole site, and then narrowed it down to MVP (the areas in the dotted squares were sorted out).
+
+<div style="display: inline">
+  <img src="assets/sitemap/sitemap-mvp.png" alt="Sitemap" width="100%">
+</div>
 
 <!-- LICENSE -->
 ## License
