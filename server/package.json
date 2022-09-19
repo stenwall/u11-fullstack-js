@@ -26,8 +26,8 @@
   "license": "ISC",
   "dependencies": {
     "@admin-bro/express": "^3.1.0",
-    "@admin-bro/mongoose": "^1.1.0",
-    "admin-bro": "^4.0.1",
+    "@admin-bro/mongoose": "^1.0.2",
+    "admin-bro": "^3.2.5",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
